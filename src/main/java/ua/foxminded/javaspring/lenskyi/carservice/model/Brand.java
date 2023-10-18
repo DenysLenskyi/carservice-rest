@@ -39,16 +39,13 @@ public class Brand {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Brand carType)) return false;
+        if (!(o instanceof Brand brand)) return false;
 
-        if (!getId().equals(carType.getId())) return false;
-        return getName().equals(carType.getName());
+        return getName().equals(brand.getName());
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
-        return result;
+        return getName().hashCode();
     }
 }

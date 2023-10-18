@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
-@Table(name = "model", schema = "carservice")
+@Table(name = "model",
+        schema = "carservice",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "year", "brand_id"}))
 public class CarModel {
 
     @Id
@@ -18,17 +20,14 @@ public class CarModel {
     private String name;
 
     @Column(name = "year", nullable = false)
-    private int year;
+    private Integer year;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+            cascade = CascadeType.PERSIST)
     @JoinTable(name = "model_type", schema = "carservice",
             joinColumns = {@JoinColumn(name = "model_id")},
             inverseJoinColumns = {@JoinColumn(name = "type_id")})

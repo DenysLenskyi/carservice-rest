@@ -41,14 +41,11 @@ public class CarType {
         if (this == o) return true;
         if (!(o instanceof CarType carType)) return false;
 
-        if (!getId().equals(carType.getId())) return false;
-        return getName().equals(carType.getName());
+        return getName() != null ? getName().equals(carType.getName()) : carType.getName() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + getName().hashCode();
-        return result;
+        return getName() != null ? getName().hashCode() : 0;
     }
 }
