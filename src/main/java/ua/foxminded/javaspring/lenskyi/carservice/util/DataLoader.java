@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.carservice.util;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -30,6 +32,7 @@ public class DataLoader implements ApplicationRunner {
     private Set<Brand> brands = new HashSet<>();
     private Set<CarType> carTypes = new HashSet<>();
     private Set<CarModel> carModels = new HashSet<>();
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public DataLoader(FileReader fileReader, BrandRepository brandRepository, CarModelRepository carModelRepository, CarTypeRepository carTypeRepository) {
@@ -50,7 +53,7 @@ public class DataLoader implements ApplicationRunner {
             String modelId = data[0];
             model.setId(modelId);
             String brandName = data[1];
-            Brand brand = getOrCreateBrandByName(brandName);
+            Brand brand = getOrCreateBrand(brandName);
             model.setBrand(brand);
             String year = data[2];
             model.setYear(Integer.parseInt(year));
@@ -62,16 +65,17 @@ public class DataLoader implements ApplicationRunner {
             dataList.remove(year);
             dataList.remove(modelName);
             List<String> carTypeNames = new ArrayList<>(dataList);
-            Set<CarType> carTypes = getCarTypes(carTypeNames);
+            Set<CarType> carTypes = getOrCreateCarTypes(carTypeNames);
             model.setTypes(carTypes);
             carModels.add(model);
         });
         brandRepository.saveAll(brands);
         carTypeRepository.saveAll(carTypes);
         carModelRepository.saveAll(carModels);
+        log.info("Initial data loaded successfully");
     }
 
-    private Brand getOrCreateBrandByName(String brandName) {
+    private Brand getOrCreateBrand(String brandName) {
         Set<String> brandNames = brands.stream()
                 .map(Brand::getName)
                 .collect(Collectors.toSet());
@@ -88,7 +92,7 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
-    private Set<CarType> getCarTypes(List<String> carTypeNames) {
+    private Set<CarType> getOrCreateCarTypes(List<String> carTypeNames) {
         Set<String> existedCarTypeNames = carTypes.stream()
                 .map(CarType::getName)
                 .collect(Collectors.toSet());

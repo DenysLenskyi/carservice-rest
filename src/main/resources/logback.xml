@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_DIR" value="logs"/>
+    <property name="LOG_FILE" value="logfile" />
+    <timestamp key="bySecond" datePattern="yyyy-MM-dd-HH:mm:ss"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" append="false">
+        <file>${LOG_DIR}/${LOG_FILE}-${bySecond}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/%d{yyyy/MM}/${LOG_FILE}%i.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="INFO" additivity="false">
+        <appender-ref ref="FILE"></appender-ref>
+        <appender-ref ref="CONSOLE"></appender-ref>
+    </root>
+</configuration>
