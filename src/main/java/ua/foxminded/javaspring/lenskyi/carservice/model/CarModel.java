@@ -31,7 +31,7 @@ public class CarModel {
     @JoinTable(name = "model_type", schema = "carservice",
             joinColumns = {@JoinColumn(name = "model_id")},
             inverseJoinColumns = {@JoinColumn(name = "type_id")})
-    private Set<CarType> types;
+    private Set<CarType> carTypes;
 
     public CarModel() {
 
@@ -69,12 +69,12 @@ public class CarModel {
         this.brand = brand;
     }
 
-    public Set<CarType> getTypes() {
-        return types;
+    public Set<CarType> getCarTypes() {
+        return carTypes;
     }
 
-    public void setTypes(Set<CarType> types) {
-        this.types = types;
+    public void setCarTypes(Set<CarType> types) {
+        this.carTypes = types;
     }
 
     @Override

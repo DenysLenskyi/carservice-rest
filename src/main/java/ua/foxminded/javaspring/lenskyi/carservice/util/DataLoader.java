@@ -66,7 +66,7 @@ public class DataLoader implements ApplicationRunner {
             dataList.remove(modelName);
             List<String> carTypeNames = new ArrayList<>(dataList);
             Set<CarType> carTypes = getOrCreateCarTypes(carTypeNames);
-            model.setTypes(carTypes);
+            model.setCarTypes(carTypes);
             carModels.add(model);
         });
         brandRepository.saveAll(brands);
