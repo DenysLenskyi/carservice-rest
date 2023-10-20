@@ -1,9 +1,9 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.BrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.BrandService;
 
@@ -29,5 +29,9 @@ public class BrandController {
         return brandService.findById(id);
     }
 
-
+    @PostMapping(path = "/new", consumes = {"application/json"})
+    public ResponseEntity<BrandDto> createBrand(@RequestBody BrandDto brandDto) {
+        BrandDto newBrand = brandService.createBrand(brandDto);
+        return new ResponseEntity<>(newBrand, HttpStatus.CREATED);
+    }
 }

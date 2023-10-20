@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.IdDoesNotExistException;
+import ua.foxminded.javaspring.lenskyi.carservice.exception.TheNameIsNotUniqueException;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = {IdDoesNotExistException.class})
+            = {IdDoesNotExistException.class, TheNameIsNotUniqueException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();

@@ -8,4 +8,6 @@ public interface BrandService {
     List<BrandDto> findAll();
 
     BrandDto findById(Long id);
+
+    BrandDto createBrand(BrandDto brandDto);
 }
