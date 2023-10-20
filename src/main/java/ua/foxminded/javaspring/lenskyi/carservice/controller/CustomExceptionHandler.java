@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import ua.foxminded.javaspring.lenskyi.carservice.exception.TheNameIsNotUniqueEx
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value
-            = {IdDoesNotExistException.class, TheNameIsNotUniqueException.class})
+            = {IdDoesNotExistException.class, TheNameIsNotUniqueException.class, ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();

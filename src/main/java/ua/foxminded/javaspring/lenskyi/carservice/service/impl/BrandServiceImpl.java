@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.carservice.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.BrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.BrandDtoMapper;
@@ -37,10 +38,11 @@ public class BrandServiceImpl implements BrandService {
         if (!brandRepository.existsById(id)) {
             throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
         }
-        return mapper.brandEntityToBrandDto(brandRepository.findById(id).orElseThrow());
+        return mapper.brandEntityToBrandDto(brandRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 
     @Override
+    @Transactional
     public BrandDto createBrand(BrandDto brandDto) {
         if (brandRepository.existsByName(brandDto.getName())) {
             throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + brandDto.getName());
@@ -49,5 +51,29 @@ public class BrandServiceImpl implements BrandService {
         brand.setName(brandDto.getName());
         brandRepository.saveAndFlush(brand);
         return mapper.brandEntityToBrandDto(brand);
+    }
+
+    @Override
+    @Transactional
+    public BrandDto updateBrand(Long id, BrandDto brandDto) {
+        if (!brandRepository.existsById(id)) {
+            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
+        }
+        Brand brand = brandRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        if (brandRepository.existsByName(brandDto.getName()) && (!brand.getName().equals(brandDto.getName()))) {
+            throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + brandDto.getName());
+        }
+        brand.setName(brandDto.getName());
+        brandRepository.saveAndFlush(brand);
+        return mapper.brandEntityToBrandDto(brand);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBrand(Long id) {
+        if (!brandRepository.existsById(id)) {
+            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
+        }
+        brandRepository.deleteById(id);
     }
 }

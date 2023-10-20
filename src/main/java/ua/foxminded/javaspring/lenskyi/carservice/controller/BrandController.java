@@ -1,7 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.BrandDto;
@@ -30,8 +30,20 @@ public class BrandController {
     }
 
     @PostMapping(path = "/new", consumes = {"application/json"})
-    public ResponseEntity<BrandDto> createBrand(@RequestBody BrandDto brandDto) {
+    public ResponseEntity<BrandDto> createBrand(@RequestBody @Valid BrandDto brandDto) {
         BrandDto newBrand = brandService.createBrand(brandDto);
         return new ResponseEntity<>(newBrand, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}", consumes = {"application/json"})
+    public ResponseEntity<BrandDto> updateBrand(@PathVariable("id") Long id,
+                                                @RequestBody @Valid BrandDto brandDto) {
+        BrandDto updatedBrandDto = brandService.updateBrand(id, brandDto);
+        return new ResponseEntity<>(updatedBrandDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBrand(@PathVariable("id") Long id) {
+        brandService.deleteBrand(id);
     }
 }
