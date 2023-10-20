@@ -1,6 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.carservice.util;
 
 import jakarta.transaction.Transactional;
+import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,11 @@ import ua.foxminded.javaspring.lenskyi.carservice.repository.BrandRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarModelRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarTypeRepository;
 
+import javax.sql.DataSource;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-@Transactional
 public class DataLoader implements ApplicationRunner {
 
     private static final String FILENAME = "/file.csv";
@@ -35,6 +36,8 @@ public class DataLoader implements ApplicationRunner {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private DataSource dataSource;
+
     public DataLoader(FileReader fileReader, BrandRepository brandRepository, CarModelRepository carModelRepository, CarTypeRepository carTypeRepository) {
         this.fileReader = fileReader;
         this.brandRepository = brandRepository;
@@ -42,6 +45,23 @@ public class DataLoader implements ApplicationRunner {
         this.carTypeRepository = carTypeRepository;
     }
 
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        migrateWithSqlAndJavaCallbacks();
+        loadData();
+    }
+
+    @Transactional
+    void migrateWithSqlAndJavaCallbacks() {
+        Flyway flyway = Flyway.configure()
+                .dataSource(dataSource)
+                .locations("db/migration", "db/callback")
+                .callbacks(new CustomFlywayCallback())
+                .load();
+        flyway.migrate();
+    }
+
+    @Transactional
     public void loadData() {
         List<String> fileStrings = new LinkedList<>(fileReader.readFile(FILENAME));
         fileStrings.remove(FILE_HEADER);
@@ -112,10 +132,5 @@ public class DataLoader implements ApplicationRunner {
                     }
                 })
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        loadData();
     }
 }

@@ -28,4 +28,6 @@ public class BrandController {
     public BrandDto findById(@PathVariable("id")Long id) {
         return brandService.findById(id);
     }
+
+
 }
