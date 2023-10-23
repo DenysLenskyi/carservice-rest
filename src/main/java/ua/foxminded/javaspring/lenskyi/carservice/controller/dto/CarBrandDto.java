@@ -1,22 +1,14 @@
-package ua.foxminded.javaspring.lenskyi.carservice.model;
+package ua.foxminded.javaspring.lenskyi.carservice.controller.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "brand", schema = "carservice")
-public class Brand {
+public class CarBrandDto {
 
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name", nullable = false, unique = true)
     @NotBlank
     private String name;
 
-    public Brand() {
+    public CarBrandDto() {
 
     }
 
@@ -39,7 +31,7 @@ public class Brand {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Brand brand)) return false;
+        if (!(o instanceof CarBrandDto brand)) return false;
 
         return getName().equals(brand.getName());
     }

@@ -14,8 +14,11 @@ import ua.foxminded.javaspring.lenskyi.carservice.exception.TheNameIsNotUniqueEx
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value
-            = {IdDoesNotExistException.class, TheNameIsNotUniqueException.class, ConstraintViolationException.class})
+    @ExceptionHandler(value = {
+            IdDoesNotExistException.class,
+            TheNameIsNotUniqueException.class,
+            ConstraintViolationException.class
+    })
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();

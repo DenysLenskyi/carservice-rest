@@ -10,7 +10,7 @@ public class CarModelDto {
     @NotBlank
     private String name;
     private Integer year;
-    private BrandDto brandDto;
+    private CarBrandDto carBrandDto;
     private Set<CarTypeDto> carTypeDtos;
 
     public CarModelDto() {
@@ -41,12 +41,12 @@ public class CarModelDto {
         this.year = year;
     }
 
-    public BrandDto getBrandDto() {
-        return brandDto;
+    public CarBrandDto getCarBrandDto() {
+        return carBrandDto;
     }
 
-    public void setBrandDto(BrandDto brandDto) {
-        this.brandDto = brandDto;
+    public void setCarBrandDto(CarBrandDto carBrandDto) {
+        this.carBrandDto = carBrandDto;
     }
 
     public Set<CarTypeDto> getCarTypeDtos() {

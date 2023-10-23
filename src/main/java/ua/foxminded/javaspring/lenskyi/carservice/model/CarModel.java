@@ -24,7 +24,7 @@ public class CarModel {
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
-    private Brand brand;
+    private CarBrand carBrand;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.PERSIST)
@@ -61,12 +61,12 @@ public class CarModel {
         this.year = year;
     }
 
-    public Brand getBrand() {
-        return brand;
+    public CarBrand getCarBrand() {
+        return carBrand;
     }
 
-    public void setBrand(Brand brand) {
-        this.brand = brand;
+    public void setCarBrand(CarBrand carBrand) {
+        this.carBrand = carBrand;
     }
 
     public Set<CarType> getCarTypes() {

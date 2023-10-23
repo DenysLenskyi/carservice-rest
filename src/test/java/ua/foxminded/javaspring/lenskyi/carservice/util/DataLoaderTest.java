@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.javaspring.lenskyi.carservice.repository.BrandRepository;
+import ua.foxminded.javaspring.lenskyi.carservice.repository.CarBrandRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarModelRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarTypeRepository;
 
@@ -24,7 +24,7 @@ class DataLoaderTest {
     @Autowired
     private DataLoader dataLoader;
     @Autowired
-    private BrandRepository brandRepository;
+    private CarBrandRepository carBrandRepository;
     @Autowired
     private CarModelRepository carModelRepository;
     @Autowired
@@ -33,7 +33,7 @@ class DataLoaderTest {
     @Test
     void loadDataTest() {
         dataLoader.loadData();
-        assertEquals(EXPECTED_NUM_BRANDS, brandRepository.findAll().size());
+        assertEquals(EXPECTED_NUM_BRANDS, carBrandRepository.findAll().size());
         assertEquals(EXPECTED_NUM_MODELS, carModelRepository.findAll().size());
         assertEquals(EXPECTED_NUM_CAR_TYPES, carTypeRepository.findAll().size());
     }
