@@ -35,10 +35,9 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     public CarBrandDto findById(Long id) {
-        if (!carBrandRepository.existsById(id)) {
-            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
-        }
-        return mapper.brandEntityToBrandDto(carBrandRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+        return carBrandRepository.findById(id)
+                .map(mapper::brandEntityToBrandDto)
+                .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id));
     }
 
     @Override
@@ -55,11 +54,11 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     @Transactional
-    public CarBrandDto updateBrand(Long id, CarBrandDto carBrandDto) {
-        if (!carBrandRepository.existsById(id)) {
-            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
+    public CarBrandDto updateBrand(CarBrandDto carBrandDto) {
+        if (!carBrandRepository.existsById(carBrandDto.getId())) {
+            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + carBrandDto.getId());
         }
-        CarBrand carBrand = carBrandRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        CarBrand carBrand = carBrandRepository.findById(carBrandDto.getId()).orElseThrow(IllegalArgumentException::new);
         if (carBrandRepository.existsByName(carBrandDto.getName()) && (!carBrand.getName().equals(carBrandDto.getName()))) {
             throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + carBrandDto.getName());
         }

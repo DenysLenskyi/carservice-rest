@@ -2,6 +2,7 @@ package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
@@ -10,7 +11,7 @@ import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("api/v1/brand")
 public class CarBrandController {
 
     private CarBrandService carBrandService;
@@ -19,7 +20,7 @@ public class CarBrandController {
         this.carBrandService = carBrandService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<CarBrandDto> findAll() {
         return carBrandService.findAll();
     }
@@ -29,17 +30,18 @@ public class CarBrandController {
         return carBrandService.findById(id);
     }
 
-    @PostMapping(path = "/new", consumes = {"application/json"})
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarBrandDto> createBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
-        CarBrandDto newBrand = carBrandService.createBrand(carBrandDto);
-        return new ResponseEntity<>(newBrand, HttpStatus.CREATED);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(carBrandService.createBrand(carBrandDto));
     }
 
-    @PutMapping(path = "/{id}", consumes = {"application/json"})
-    public ResponseEntity<CarBrandDto> updateBrand(@PathVariable("id") Long id,
-                                                   @RequestBody @Valid CarBrandDto carBrandDto) {
-        CarBrandDto updatedCarBrandDto = carBrandService.updateBrand(id, carBrandDto);
-        return new ResponseEntity<>(updatedCarBrandDto, HttpStatus.OK);
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CarBrandDto> updateBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(carBrandService.updateBrand(carBrandDto));
     }
 
     @DeleteMapping("/{id}")

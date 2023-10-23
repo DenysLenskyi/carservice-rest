@@ -11,7 +11,7 @@ public interface CarBrandService {
 
     CarBrandDto createBrand(CarBrandDto carBrandDto);
 
-    CarBrandDto updateBrand(Long id, CarBrandDto carBrandDto);
+    CarBrandDto updateBrand(CarBrandDto carBrandDto);
 
     void deleteBrand(Long id);
 }
