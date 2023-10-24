@@ -1,6 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
 import jakarta.validation.Valid;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,20 @@ public class CarBrandController {
 
     @GetMapping("/all")
     public List<CarBrandDto> findAll() {
-        return carBrandService.findAll();
+        return carBrandService.findAllPaginated(null, null, null).getContent();
+    }
+
+    @GetMapping("/all/{pageNumber}/{pageSize}")
+    public List<CarBrandDto> findAll(@PathVariable Integer pageNumber,
+                                     @PathVariable Integer pageSize) {
+        return carBrandService.findAllPaginated(pageNumber, pageSize, null).getContent();
+    }
+
+    @GetMapping("/all/{pageNumber}/{pageSize}/{sort}")
+    public List<CarBrandDto> findAll(@PathVariable Integer pageNumber,
+                                     @PathVariable Integer pageSize,
+                                     @PathVariable String sort) {
+        return carBrandService.findAllPaginated(pageNumber, pageSize, sort).getContent();
     }
 
     @GetMapping("/{id}")

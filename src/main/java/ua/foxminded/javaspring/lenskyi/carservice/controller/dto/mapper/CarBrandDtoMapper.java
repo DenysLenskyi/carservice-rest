@@ -7,7 +7,7 @@ import ua.foxminded.javaspring.lenskyi.carservice.model.CarBrand;
 @Mapper(componentModel = "spring")
 public interface CarBrandDtoMapper {
 
-    CarBrandDto brandEntityToBrandDto(CarBrand carBrand);
+    CarBrandDto carBrandEntityToCarBrandDto(CarBrand carBrand);
 
-    CarBrand brandDtoToBrandEntity(CarBrandDto carBrandDto);
+    CarBrand carBrandDtoToCarBrandEntity(CarBrandDto carBrandDto);
 }
