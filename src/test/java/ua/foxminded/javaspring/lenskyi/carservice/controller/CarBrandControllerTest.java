@@ -118,5 +118,4 @@ class CarBrandControllerTest {
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains("Error. Not unique CarBrand name="));
     }
-
 }
