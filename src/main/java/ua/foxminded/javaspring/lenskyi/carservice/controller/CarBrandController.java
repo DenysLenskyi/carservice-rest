@@ -44,6 +44,11 @@ public class CarBrandController {
         return carBrandService.findById(id);
     }
 
+    @GetMapping("/by-name/{name}")
+    public CarBrandDto findByName(@PathVariable("name")String name) {
+        return carBrandService.findByName(name);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CarBrandDto> createBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
         return ResponseEntity

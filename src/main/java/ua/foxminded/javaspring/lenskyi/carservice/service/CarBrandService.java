@@ -11,6 +11,8 @@ public interface CarBrandService {
 
     CarBrandDto findById(Long id);
 
+    CarBrandDto findByName(String name);
+
     CarBrandDto createBrand(CarBrandDto carBrandDto);
 
     CarBrandDto updateBrand(CarBrandDto carBrandDto);
