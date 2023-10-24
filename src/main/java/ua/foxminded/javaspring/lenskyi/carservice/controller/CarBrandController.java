@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
