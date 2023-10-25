@@ -26,7 +26,7 @@ public class DataLoader implements ApplicationRunner {
     private static final String FILE_HEADER = "objectId,Make,Year,Model,Category";
     private static final String FILE_LAST_LINE = ",,,,";
     private static final String COMA = ",";
-    private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
+    private static final Logger DATA_LOADER_LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private FileReader fileReader;
     private CarBrandRepository carBrandRepository;
     private CarModelRepository carModelRepository;
@@ -92,7 +92,7 @@ public class DataLoader implements ApplicationRunner {
         carBrandRepository.saveAll(brandMap.values());
         carTypeRepository.saveAll(carTypeMap.values());
         carModelRepository.saveAll(carModels);
-        log.info("Initial data loaded successfully");
+        DATA_LOADER_LOGGER.info("Initial data loaded successfully");
     }
 
     private CarBrand getOrCreateBrand(String givenBrandName) {

@@ -11,7 +11,7 @@ import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/brand")
+@RequestMapping("/api/v1/brand")
 public class CarBrandController {
 
     private CarBrandService carBrandService;

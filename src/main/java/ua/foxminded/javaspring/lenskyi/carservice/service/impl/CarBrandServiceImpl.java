@@ -68,10 +68,8 @@ public class CarBrandServiceImpl implements CarBrandService {
     @Override
     @Transactional
     public CarBrandDto updateBrand(CarBrandDto carBrandDto) {
-        if (!carBrandRepository.existsById(carBrandDto.getId())) {
-            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + carBrandDto.getId());
-        }
-        CarBrand carBrand = carBrandRepository.findById(carBrandDto.getId()).orElseThrow(IllegalArgumentException::new);
+        CarBrand carBrand = carBrandRepository.findById(carBrandDto.getId())
+                .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + carBrandDto.getId()));
         if (carBrandRepository.existsByName(carBrandDto.getName()) && (!carBrand.getName().equals(carBrandDto.getName()))) {
             throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + carBrandDto.getName());
         }
