@@ -96,11 +96,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private CarBrand getOrCreateBrand(String givenBrandName) {
-        Set<String> brandNamesCopy = new HashSet<>(brandMap.keySet());
-        return brandNamesCopy.stream()
-                .filter(brandName -> brandName != null && brandName.equals(givenBrandName))
-                .findFirst()
-                .map(brandMap::get)
+        return Optional.ofNullable(brandMap.get(givenBrandName))
                 .orElseGet(() -> {
                     CarBrand carBrand = new CarBrand();
                     carBrand.setName(givenBrandName);
@@ -117,11 +113,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private CarType getOrCreateCarType(String givenCarTypeName) {
-        Set<String> carTypeNamesCopy = new HashSet<>(carTypeMap.keySet());
-        return carTypeNamesCopy.stream()
-                .filter(carTypeName -> carTypeName != null && carTypeName.equals(givenCarTypeName))
-                .findFirst()
-                .map(carTypeMap::get)
+        return Optional.ofNullable(carTypeMap.get(givenCarTypeName))
                 .orElseGet(() -> {
                     CarType carType = new CarType();
                     carType.setName(givenCarTypeName);
