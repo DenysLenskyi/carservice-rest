@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class FileReader {
 
-    private static final Logger FILE_READER_LOGGER = LoggerFactory.getLogger(FileReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileReader.class);
 
     public List<String> readFile(String fileName) {
         List<String> list = new ArrayList<>();
@@ -25,7 +25,7 @@ public class FileReader {
             list = reader.lines().toList();
         } catch (IOException e) {
             e.printStackTrace();
-            FILE_READER_LOGGER.error("Reading file error");
+            LOGGER.error("Reading file error");
         }
         return list;
     }
