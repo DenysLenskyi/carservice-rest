@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="LOG_DIR" value="logs"/>
-    <property name="LOG_FILE" value="logfile" />
     <timestamp key="bySecond" datePattern="yyyy-MM-dd-HH:mm:ss"/>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender" append="false">
-        <file>${LOG_DIR}/${LOG_FILE}-${bySecond}.log</file>
+        <file>${LOG_DIR}/${bySecond}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/%d{yyyy/MM}/${LOG_FILE}%i.gz</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/%d{yyyy/MM}/%i.gz</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>1MB</maxFileSize>
