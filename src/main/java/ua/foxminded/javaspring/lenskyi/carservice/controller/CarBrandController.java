@@ -21,10 +21,10 @@ public class CarBrandController {
     }
 
     @GetMapping("/all")
-    public List<CarBrandDto> findAll(@RequestParam(defaultValue = "0") int page,
+    public List<CarBrandDto> findAll(@RequestParam(defaultValue = "0") int pageNumber,
                                      @RequestParam(defaultValue = "0") int pageSize,
                                      @RequestParam(defaultValue = "id") String sort) {
-        return carBrandService.findAllPaginated(page, pageSize, sort).getContent();
+        return carBrandService.findAllPaginated(pageNumber, pageSize, sort).getContent();
     }
 
     @GetMapping("/{id}")
