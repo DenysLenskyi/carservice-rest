@@ -89,12 +89,12 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     public Page<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
-        Pageable pageable;
-        if (pageSize == 0) pageSize = carBrandRepository.findAll().size();
-        pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
+        List<CarBrand> carBrandList = carBrandRepository.findAll();
+        if (pageSize == 0) pageSize = carBrandList.size();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
         Page<CarBrand> pageCarBrand;
         try {
-            pageCarBrand = carBrandRepository.findAll(pageable);
+            pageCarBrand = convertListToPage(carBrandList, pageable);
         } catch (PropertyReferenceException e) {
             throw new SortingFieldDoesNotExistException(FIELD_DOES_NOT_EXIST_ERROR_MESSAGE + sort);
         }
@@ -103,5 +103,11 @@ public class CarBrandServiceImpl implements CarBrandService {
                 .toList();
         return new PageImpl<>(carBrandDtoList, PageRequest.of(
                 pageCarBrand.getNumber(), pageCarBrand.getSize()), pageCarBrand.getTotalElements());
+    }
+
+    private Page<CarBrand> convertListToPage(List<CarBrand> carBrandList, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), carBrandList.size());
+        return new PageImpl<>(carBrandList.subList(start, end), pageable, carBrandList.size());
     }
 }
