@@ -90,13 +90,8 @@ public class CarBrandServiceImpl implements CarBrandService {
     @Override
     public Page<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
         Pageable pageable;
-        if (pageNumber == null) pageNumber = 0;
-        if (pageSize == null) pageSize = carBrandRepository.findAll().size();
-        if (sort != null) {
-            pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
-        } else {
-            pageable = PageRequest.of(pageNumber, pageSize);
-        }
+        if (pageSize == 0) pageSize = carBrandRepository.findAll().size();
+        pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
         Page<CarBrand> pageCarBrand;
         try {
             pageCarBrand = carBrandRepository.findAll(pageable);
