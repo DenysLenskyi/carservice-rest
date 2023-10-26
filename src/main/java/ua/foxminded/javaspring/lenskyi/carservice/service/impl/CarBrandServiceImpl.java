@@ -55,7 +55,7 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     @Transactional
-    public CarBrandDto createBrand(CarBrandDto carBrandDto) {
+    public CarBrandDto createCarBrand(CarBrandDto carBrandDto) {
         if (carBrandRepository.existsByName(carBrandDto.getName())) {
             throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + carBrandDto.getName());
         }
@@ -67,7 +67,7 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     @Transactional
-    public CarBrandDto updateBrand(CarBrandDto carBrandDto) {
+    public CarBrandDto updateCarBrand(CarBrandDto carBrandDto) {
         CarBrand carBrand = carBrandRepository.findById(carBrandDto.getId())
                 .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + carBrandDto.getId()));
         if (carBrandRepository.existsByName(carBrandDto.getName()) && (!carBrand.getName().equals(carBrandDto.getName()))) {
@@ -80,7 +80,7 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     @Transactional
-    public void deleteBrand(Long id) {
+    public void deleteCarBrand(Long id) {
         if (!carBrandRepository.existsById(id)) {
             throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
         }

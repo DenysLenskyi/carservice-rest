@@ -38,21 +38,21 @@ public class CarBrandController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarBrandDto> createBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
+    public ResponseEntity<CarBrandDto> createCarBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(carBrandService.createBrand(carBrandDto));
+                .body(carBrandService.createCarBrand(carBrandDto));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CarBrandDto> updateBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
+    public ResponseEntity<CarBrandDto> updateCarBrand(@RequestBody @Valid CarBrandDto carBrandDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(carBrandService.updateBrand(carBrandDto));
+                .body(carBrandService.updateCarBrand(carBrandDto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBrand(@PathVariable("id") Long id) {
-        carBrandService.deleteBrand(id);
+    public void deleteCarBrand(@PathVariable("id") Long id) {
+        carBrandService.deleteCarBrand(id);
     }
 }
