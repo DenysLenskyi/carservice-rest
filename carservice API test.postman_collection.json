@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "9100f507-ca1d-492e-aefa-c492e60ee536",
+		"name": "carservice API test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30655531"
+	},
+	"item": [
+		{
+			"name": "create_brand",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test_brand_name\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_brand",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"name\": \"Lexussss\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_brand",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/1290",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"1290"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_brand",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_brand_paginated",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/all/0/64",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"all",
+						"0",
+						"64"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_brand_paginated_sorted",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/all/0/64/name",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"all",
+						"0",
+						"64",
+						"name"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
