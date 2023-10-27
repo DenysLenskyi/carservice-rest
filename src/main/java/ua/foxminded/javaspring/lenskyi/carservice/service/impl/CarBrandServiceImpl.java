@@ -8,7 +8,6 @@ import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarBrandDtoMapper;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.IdDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.NameDoesNotExistException;
-import ua.foxminded.javaspring.lenskyi.carservice.exception.SortingFieldDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.TheNameIsNotUniqueException;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarBrand;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarBrandRepository;
@@ -89,25 +88,14 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     @Override
     public Page<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
-        List<CarBrand> carBrandList = carBrandRepository.findAll();
-        if (pageSize == 0) pageSize = carBrandList.size();
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
-        Page<CarBrand> pageCarBrand;
-        try {
-            pageCarBrand = convertListToPage(carBrandList, pageable);
-        } catch (PropertyReferenceException e) {
-            throw new SortingFieldDoesNotExistException(FIELD_DOES_NOT_EXIST_ERROR_MESSAGE + sort);
-        }
+        if (pageSize == 0) pageSize = carBrandRepository.findAll().size();
+        Page<CarBrand> pageCarBrand = carBrandRepository.findAll(PageRequest.of(
+                pageNumber, pageSize, Sort.by(sort)
+        ));
         List<CarBrandDto> carBrandDtoList = pageCarBrand.getContent().stream()
                 .map(mapper::carBrandEntityToCarBrandDto)
                 .toList();
         return new PageImpl<>(carBrandDtoList, PageRequest.of(
-                pageCarBrand.getNumber(), pageCarBrand.getSize()), pageCarBrand.getTotalElements());
-    }
-
-    private Page<CarBrand> convertListToPage(List<CarBrand> carBrandList, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), carBrandList.size());
-        return new PageImpl<>(carBrandList.subList(start, end), pageable, carBrandList.size());
+                pageCarBrand.getNumber(), pageCarBrand.getSize(), pageCarBrand.getSort()), pageCarBrand.getTotalElements());
     }
 }

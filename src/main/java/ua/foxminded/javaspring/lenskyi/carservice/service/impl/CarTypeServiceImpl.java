@@ -2,13 +2,11 @@ package ua.foxminded.javaspring.lenskyi.carservice.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.*;
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarTypeDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarTypeDtoMapper;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.IdDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.NameDoesNotExistException;
-import ua.foxminded.javaspring.lenskyi.carservice.exception.SortingFieldDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.TheNameIsNotUniqueException;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarType;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarTypeRepository;
@@ -33,26 +31,13 @@ public class CarTypeServiceImpl implements CarTypeService {
 
     @Override
     public Page<CarTypeDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
-        List<CarType> carTypeList = carTypeRepository.findAll();
-        if (pageSize == 0) pageSize = carTypeList.size();
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sort);
-        Page<CarType> carTypePage;
-        try {
-            carTypePage = convertListToPage(carTypeList, pageable);
-        } catch (PropertyReferenceException e) {
-            throw new SortingFieldDoesNotExistException(FIELD_DOES_NOT_EXIST_ERROR_MESSAGE + sort);
-        }
+        if (pageSize == 0) pageSize = carTypeRepository.findAll().size();
+        Page<CarType> carTypePage = carTypeRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sort)));
         List<CarTypeDto> carTypeDtoList = carTypePage.getContent().stream()
                 .map(mapper::carTypeEntityToCarTypeDto)
                 .toList();
         return new PageImpl<>(carTypeDtoList, PageRequest.of(
-                carTypePage.getNumber(), carTypePage.getSize()), carTypePage.getTotalElements());
-    }
-
-    private Page<CarType> convertListToPage(List<CarType> carTypeList, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), carTypeList.size());
-        return new PageImpl<>(carTypeList.subList(start, end), pageable, carTypeList.size());
+                carTypePage.getNumber(), carTypePage.getSize(), carTypePage.getSort()), carTypePage.getTotalElements());
     }
 
     @Override

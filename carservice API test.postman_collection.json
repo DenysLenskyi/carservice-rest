@@ -38,9 +38,9 @@
 			"response": []
 		},
 		{
-			"name": "update_brand",
+			"name": "create_brand_name_exists_Lexus",
 			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -50,7 +50,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"1\",\n    \"name\": \"Lexussss\"\n}"
+					"raw": "{\n    \"name\": \"Lexus\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/v1/brand",
@@ -69,7 +69,100 @@
 			"response": []
 		},
 		{
-			"name": "delete_brand",
+			"name": "update_brand",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"20\",\n    \"name\": \"updated_name\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_brand_name_exists",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"20\",\n    \"name\": \"Ram\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update_brand_id_does_not_exist",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"-1\",\n    \"name\": \"Ram\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_brand_id_does_not_exist",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -85,6 +178,28 @@
 						"v1",
 						"brand",
 						"1290"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_brand",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"10"
 					]
 				}
 			},
@@ -113,12 +228,12 @@
 			"response": []
 		},
 		{
-			"name": "get_all_brand_paginated",
+			"name": "get_all_brand_paginated_sort_by_name",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/brand/all/0/64",
+					"raw": "http://localhost:8080/api/v1/brand/all?sort=name",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -128,9 +243,113 @@
 						"api",
 						"v1",
 						"brand",
-						"all",
-						"0",
-						"64"
+						"all"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_brand_paginated_p=12_s=5",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/all?pageNumber=12&pageSize=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"all"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "12"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_brand_paginated_p=12_s=5_sort=name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/all?pageNumber=12&pageSize=5&sort=name",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"all"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "12"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						},
+						{
+							"key": "sort",
+							"value": "name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_brand_paginated_p=11_s=5",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/all?pageNumber=11&pageSize=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"all"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "11"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						}
 					]
 				}
 			},
@@ -156,6 +375,96 @@
 						"0",
 						"64",
 						"name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_brand_by_id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_brand_by_name_Lexus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/by-name/Lexus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"by-name",
+						"Lexus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_brand_by_name_does_not_exist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/by-name/Lexusss",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"by-name",
+						"Lexusss"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_brand_by_id_does_not_exist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/brand/-1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"brand",
+						"-1"
 					]
 				}
 			},
