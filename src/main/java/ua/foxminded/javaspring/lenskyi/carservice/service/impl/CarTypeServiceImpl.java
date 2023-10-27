@@ -20,7 +20,6 @@ public class CarTypeServiceImpl implements CarTypeService {
     private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with id=";
     private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with name=";
     private static final String ERROR_NOT_UNIQUE_CAR_TYPE_NAME = "Error. Not unique CarType name=";
-    private static final String FIELD_DOES_NOT_EXIST_ERROR_MESSAGE = "Error. A CarType has no field=";
     private final CarTypeRepository carTypeRepository;
     private final CarTypeDtoMapper mapper;
 

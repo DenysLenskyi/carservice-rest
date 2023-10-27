@@ -2,7 +2,6 @@ package ua.foxminded.javaspring.lenskyi.carservice.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.*;
-import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarBrandDtoMapper;
@@ -21,7 +20,6 @@ public class CarBrandServiceImpl implements CarBrandService {
     private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with id=";
     private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with name=";
     private static final String NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE = "Error. Not unique CarBrand name=";
-    private static final String FIELD_DOES_NOT_EXIST_ERROR_MESSAGE = "Error. A Brand has no field=";
     private final CarBrandRepository carBrandRepository;
     private CarBrandDtoMapper mapper;
 

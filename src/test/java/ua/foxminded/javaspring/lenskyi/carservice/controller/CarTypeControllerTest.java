@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarTypeDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarTypeService;
 
@@ -34,7 +33,6 @@ class CarTypeControllerTest {
     private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with id=";
     private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with name=";
     private static final String ERROR_NOT_UNIQUE_CAR_TYPE_NAME = "Error. Not unique CarType name=";
-    private static final String FIELD_DOES_NOT_EXIST_ERROR_MESSAGE = "Error. A CarType has no field=";
     private final static int EXPECTED_NUM_TYPES = 10;
     @Autowired
     private CarTypeService carTypeService;
