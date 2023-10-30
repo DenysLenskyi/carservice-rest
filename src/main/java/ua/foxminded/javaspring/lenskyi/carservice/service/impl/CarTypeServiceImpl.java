@@ -62,6 +62,12 @@ public class CarTypeServiceImpl implements CarTypeService {
     }
 
     @Override
+    public CarType findCarTypeByName(String name) {
+        return carTypeRepository.findCarTypeByName(name)
+                .orElse(null);
+    }
+
+    @Override
     @Transactional
     public CarTypeDto createCarType(CarTypeDto carTypeDto) {
         if (carTypeRepository.existsByName(carTypeDto.getName())) {
