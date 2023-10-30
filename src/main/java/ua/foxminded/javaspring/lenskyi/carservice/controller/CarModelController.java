@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
+import ua.foxminded.javaspring.lenskyi.carservice.controller.specification.CarModelWithBrand;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.specification.CarModelWithYear;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarModel;
+import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarModelService;
 
 import java.util.List;
@@ -17,17 +19,21 @@ import java.util.List;
 public class CarModelController {
 
     private CarModelService carModelService;
+    private CarBrandService carBrandService;
 
-    public CarModelController(CarModelService carModelService) {
+    public CarModelController(CarModelService carModelService, CarBrandService carBrandService) {
         this.carModelService = carModelService;
+        this.carBrandService = carBrandService;
     }
 
     @GetMapping("/all")
     public List<CarModelDto> findAll(@RequestParam(defaultValue = "0") int pageNumber,
                                      @RequestParam(defaultValue = "0") int pageSize,
                                      @RequestParam(defaultValue = "id") String sort,
-                                     @RequestParam(required = false) Integer year) {
-        Specification<CarModel> spec = Specification.where(new CarModelWithYear(year));
+                                     @RequestParam(required = false) Integer year,
+                                     @RequestParam(required = false) String brandName) {
+        Specification<CarModel> spec = Specification.where(new CarModelWithYear(year))
+                .and(new CarModelWithBrand(carBrandService.findCarBrandByName(brandName)));
         return carModelService.findAll(pageNumber, pageSize, sort, spec).getContent();
     }
 }

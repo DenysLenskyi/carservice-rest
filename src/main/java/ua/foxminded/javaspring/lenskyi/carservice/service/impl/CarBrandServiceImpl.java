@@ -51,6 +51,12 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
+    public CarBrand findCarBrandByName(String name) {
+        return carBrandRepository.findCarBrandByName(name)
+                .orElse(null);
+    }
+
+    @Override
     @Transactional
     public CarBrandDto createCarBrand(CarBrandDto carBrandDto) {
         if (carBrandRepository.existsByName(carBrandDto.getName())) {

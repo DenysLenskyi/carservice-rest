@@ -2,6 +2,7 @@ package ua.foxminded.javaspring.lenskyi.carservice.service;
 
 import org.springframework.data.domain.Page;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.CarBrand;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface CarBrandService {
     CarBrandDto findById(Long id);
 
     CarBrandDto findByName(String name);
+
+    CarBrand findCarBrandByName(String name);
 
     CarBrandDto createCarBrand(CarBrandDto carBrandDto);
 
