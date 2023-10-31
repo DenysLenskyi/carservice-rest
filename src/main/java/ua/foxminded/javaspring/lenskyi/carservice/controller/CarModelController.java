@@ -1,10 +1,10 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.specification.CarModelWithBrand;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.specification.CarModelWithName;
@@ -45,5 +45,12 @@ public class CarModelController {
                 .and(new CarModelWithBrand(carBrandService.findCarBrandByName(brandName)))
                 .and(new CarModelWithType(carTypeService.findCarTypeByName(typeName)));
         return carModelService.findAll(pageNumber, pageSize, sort, spec).getContent();
+    }
+
+    @PostMapping
+    public ResponseEntity<CarModelDto> createCarModel(@RequestBody @Valid CarModelDto carModelDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(carModelService.createCarModel(carModelDto));
     }
 }

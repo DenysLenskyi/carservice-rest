@@ -8,4 +8,6 @@ import ua.foxminded.javaspring.lenskyi.carservice.model.CarModel;
 public interface CarModelService {
 
     Page<CarModelDto> findAll(Integer pageNumber, Integer pageSize, String sort, Specification<CarModel> spec);
+
+    CarModelDto createCarModel(CarModelDto carModelDto);
 }

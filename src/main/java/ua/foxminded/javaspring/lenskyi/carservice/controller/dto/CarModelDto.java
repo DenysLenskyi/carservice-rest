@@ -1,6 +1,8 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -9,8 +11,12 @@ public class CarModelDto {
     private String id;
     @NotBlank
     private String name;
+    @NotNull
     private Integer year;
+    @NotNull
     private CarBrandDto carBrandDto;
+    @NotNull
+    @NotEmpty
     private Set<CarTypeDto> carTypeDtos;
 
     public CarModelDto() {

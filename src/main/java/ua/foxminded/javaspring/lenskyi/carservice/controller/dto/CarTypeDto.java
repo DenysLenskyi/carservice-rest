@@ -31,13 +31,16 @@ public class CarTypeDto {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CarTypeDto carType)) return false;
+        if (!(o instanceof CarTypeDto that)) return false;
 
-        return getName() != null ? getName().equals(carType.getName()) : carType.getName() == null;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        return getName() != null ? getName().equals(that.getName()) : that.getName() == null;
     }
 
     @Override
     public int hashCode() {
-        return getName() != null ? getName().hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        return result;
     }
 }
