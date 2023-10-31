@@ -58,4 +58,11 @@ public class CarModelController {
     public void deleteCarModel(@PathVariable("id") String id) {
         carModelService.deleteCarModel(id);
     }
+
+    @PutMapping
+    public ResponseEntity<CarModelDto> updateCarModel(@RequestBody CarModelDto carModelDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(carModelService.updateCarModel(carModelDto));
+    }
 }

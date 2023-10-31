@@ -30,6 +30,7 @@ public class CarModelServiceImpl implements CarModelService {
 
     private static final String BRAND_ID_DOES_NOT_EXIST = "There is no CarBrand with id=";
     private static final String TYPE_ID_DOES_NOT_EXIST = "There is no CarType with id=";
+    private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id=";
     private static final Logger LOGGER = LoggerFactory.getLogger(CarModelServiceImpl.class);
     private final CarModelRepository carModelRepository;
     private final CarBrandRepository carBrandRepository;
@@ -80,6 +81,7 @@ public class CarModelServiceImpl implements CarModelService {
                 .collect(Collectors.toSet());
         carModel.setCarTypes(carTypes);
         carModelRepository.saveAndFlush(carModel);
+        LOGGER.info("CarModel has been created");
         return mapper.carModelEntityToCarModelDto(carModel);
     }
 
@@ -103,5 +105,41 @@ public class CarModelServiceImpl implements CarModelService {
     public void deleteCarModel(String id) {
         carModelRepository.deleteById(id);
         LOGGER.info("CarModel deleted; id = {}", id);
+    }
+
+    @Override
+    @Transactional
+    public CarModelDto updateCarModel(CarModelDto carModelDto) {
+        LOGGER.info("Updating CarModel");
+        CarModel carModel = carModelRepository.findById(carModelDto.getId())
+                .orElseThrow(() -> new IdDoesNotExistException(
+                        MODEL_ID_DOES_NOT_EXIST + carModelDto.getId()
+                ));
+        if (carModelDto.getName() != null) {
+            carModel.setName(carModelDto.getName());
+        }
+        if (carModelDto.getYear() != null) {
+            carModel.setYear(carModelDto.getYear());
+        }
+        if (carModelDto.getCarBrandDto() != null && carModelDto.getCarBrandDto().getId() != null) {
+            CarBrand carBrand = carBrandRepository.findById(carModelDto.getCarBrandDto().getId())
+                    .orElseThrow(() -> new IdDoesNotExistException(
+                            BRAND_ID_DOES_NOT_EXIST + carModelDto.getCarBrandDto().getId()
+                    ));
+            carModel.setCarBrand(carBrand);
+        }
+        if (carModelDto.getCarTypeDtos() != null && !carModelDto.getCarTypeDtos().isEmpty() &&
+        !carModelDto.getCarTypeDtos().contains(null)) {
+            Set<CarType> carTypes = carModelDto.getCarTypeDtos().stream()
+                    .map(carTypeDto -> carTypeRepository.findById(carTypeDto.getId())
+                            .orElseThrow(() -> new IdDoesNotExistException(
+                                    TYPE_ID_DOES_NOT_EXIST + carTypeDto.getId()
+                            )))
+                    .collect(Collectors.toSet());
+            carModel.setCarTypes(carTypes);
+        }
+        carModelRepository.saveAndFlush(carModel);
+        LOGGER.info("CarModel has been updated");
+        return mapper.carModelEntityToCarModelDto(carModel);
     }
 }

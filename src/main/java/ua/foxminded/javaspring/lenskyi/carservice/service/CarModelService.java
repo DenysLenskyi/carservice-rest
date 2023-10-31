@@ -12,4 +12,6 @@ public interface CarModelService {
     CarModelDto createCarModel(CarModelDto carModelDto);
 
     void deleteCarModel(String id);
+
+    CarModelDto updateCarModel(CarModelDto carModelDto);
 }
