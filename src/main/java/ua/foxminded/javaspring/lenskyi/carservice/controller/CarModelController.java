@@ -53,4 +53,9 @@ public class CarModelController {
                 .status(HttpStatus.CREATED)
                 .body(carModelService.createCarModel(carModelDto));
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCarModel(@PathVariable("id") String id) {
+        carModelService.deleteCarModel(id);
+    }
 }

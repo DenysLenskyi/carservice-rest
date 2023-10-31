@@ -97,4 +97,11 @@ public class CarModelServiceImpl implements CarModelService {
         LOGGER.info("CarModel id has been generated");
         return carModelId.toString();
     }
+
+    @Override
+    @Transactional
+    public void deleteCarModel(String id) {
+        carModelRepository.deleteById(id);
+        LOGGER.info("CarModel deleted; id = {}", id);
+    }
 }

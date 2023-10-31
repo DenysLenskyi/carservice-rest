@@ -10,4 +10,6 @@ public interface CarModelService {
     Page<CarModelDto> findAll(Integer pageNumber, Integer pageSize, String sort, Specification<CarModel> spec);
 
     CarModelDto createCarModel(CarModelDto carModelDto);
+
+    void deleteCarModel(String id);
 }
