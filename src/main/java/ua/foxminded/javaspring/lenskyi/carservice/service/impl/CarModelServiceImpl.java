@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarModelDtoMapper;
+import ua.foxminded.javaspring.lenskyi.carservice.exception.CarModelNameYearBrandConstraintViolationException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.IdDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarBrand;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarModel;
@@ -31,6 +32,8 @@ public class CarModelServiceImpl implements CarModelService {
     private static final String BRAND_ID_DOES_NOT_EXIST = "There is no CarBrand with id=";
     private static final String TYPE_ID_DOES_NOT_EXIST = "There is no CarType with id=";
     private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id=";
+    private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
+            "This CarModel name, year, Brand already exist";
     private static final Logger LOGGER = LoggerFactory.getLogger(CarModelServiceImpl.class);
     private final CarModelRepository carModelRepository;
     private final CarBrandRepository carBrandRepository;
@@ -72,6 +75,11 @@ public class CarModelServiceImpl implements CarModelService {
                 .orElseThrow(() -> new IdDoesNotExistException(
                         BRAND_ID_DOES_NOT_EXIST + carModelDto.getCarBrandDto().getId()
                 ));
+        if (carModelRepository.existsByNameAndYearAndCarBrand(carModel.getName(), carModel.getYear(),
+                carBrand)) {
+            throw new CarModelNameYearBrandConstraintViolationException(
+                    MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE);
+        }
         carModel.setCarBrand(carBrand);
         Set<CarType> carTypes = carModelDto.getCarTypeDtos().stream()
                 .map(carTypeDto -> carTypeRepository.findById(carTypeDto.getId())
@@ -128,8 +136,11 @@ public class CarModelServiceImpl implements CarModelService {
                     ));
             carModel.setCarBrand(carBrand);
         }
+
+        // TODO | if a model exist by updated name, year, brand -> find that model, if id not equal carModel.id then throw constraint violation  exception
+
         if (carModelDto.getCarTypeDtos() != null && !carModelDto.getCarTypeDtos().isEmpty() &&
-        !carModelDto.getCarTypeDtos().contains(null)) {
+                !carModelDto.getCarTypeDtos().contains(null)) {
             Set<CarType> carTypes = carModelDto.getCarTypeDtos().stream()
                     .map(carTypeDto -> carTypeRepository.findById(carTypeDto.getId())
                             .orElseThrow(() -> new IdDoesNotExistException(
