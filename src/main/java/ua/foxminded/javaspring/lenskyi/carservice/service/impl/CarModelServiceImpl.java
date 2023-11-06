@@ -20,10 +20,15 @@ import ua.foxminded.javaspring.lenskyi.carservice.model.CarType;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarBrandRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarModelRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarTypeRepository;
+import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithBrand;
+import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithName;
+import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithType;
+import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithYear;
+import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarModelService;
+import ua.foxminded.javaspring.lenskyi.carservice.service.CarTypeService;
 
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,19 +44,29 @@ public class CarModelServiceImpl implements CarModelService {
     private final CarModelRepository carModelRepository;
     private final CarBrandRepository carBrandRepository;
     private final CarTypeRepository carTypeRepository;
+    private CarBrandService carBrandService;
+    private CarTypeService carTypeService;
     private CarModelDtoMapper mapper;
 
     public CarModelServiceImpl(CarModelRepository carModelRepository, CarBrandRepository carBrandRepository,
-                               CarTypeRepository carTypeRepository, CarModelDtoMapper mapper) {
+                               CarTypeRepository carTypeRepository, CarBrandService carBrandService,
+                               CarTypeService carTypeService, CarModelDtoMapper mapper) {
         this.carModelRepository = carModelRepository;
         this.carBrandRepository = carBrandRepository;
         this.carTypeRepository = carTypeRepository;
+        this.carBrandService = carBrandService;
+        this.carTypeService = carTypeService;
         this.mapper = mapper;
     }
 
     @Override
-    public Page<CarModelDto> findAll(Integer pageNumber, Integer pageSize, String sort, Specification<CarModel> spec) {
+    public Page<CarModelDto> findAll(Integer pageNumber, Integer pageSize, String sort,
+                                     String modelName, Integer year, String brandName, String typeName) {
         if (pageSize == 0) pageSize = carModelRepository.findAll().size();
+        Specification<CarModel> spec = Specification.where(new CarModelWithYear(year))
+                .and(new CarModelWithName(modelName))
+                .and(new CarModelWithBrand(carBrandService.findCarBrandByName(brandName)))
+                .and(new CarModelWithType(carTypeService.findCarTypeByName(typeName)));
         Page<CarModel> carModelPage = carModelRepository.findAll(spec, PageRequest.of(pageNumber, pageSize, Sort.by(sort)));
         List<CarModelDto> carModelDtoList = carModelPage.getContent().stream()
                 .map(mapper::carModelEntityToCarModelDto)

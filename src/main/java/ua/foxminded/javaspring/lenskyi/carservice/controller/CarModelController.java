@@ -1,19 +1,11 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
-import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithBrand;
-import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithName;
-import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithType;
-import ua.foxminded.javaspring.lenskyi.carservice.repository.specification.CarModelWithYear;
-import ua.foxminded.javaspring.lenskyi.carservice.model.CarModel;
-import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarModelService;
-import ua.foxminded.javaspring.lenskyi.carservice.service.CarTypeService;
 
 import java.util.List;
 
@@ -22,14 +14,9 @@ import java.util.List;
 public class CarModelController {
 
     private CarModelService carModelService;
-    private CarBrandService carBrandService;
-    private CarTypeService carTypeService;
 
-    public CarModelController(CarModelService carModelService, CarBrandService carBrandService,
-                              CarTypeService carTypeService) {
+    public CarModelController(CarModelService carModelService) {
         this.carModelService = carModelService;
-        this.carBrandService = carBrandService;
-        this.carTypeService = carTypeService;
     }
 
     @GetMapping("/search")
@@ -40,11 +27,7 @@ public class CarModelController {
                                      @RequestParam(required = false) Integer year,
                                      @RequestParam(required = false) String brandName,
                                      @RequestParam(required = false) String typeName) {
-        Specification<CarModel> spec = Specification.where(new CarModelWithYear(year))
-                .and(new CarModelWithName(modelName))
-                .and(new CarModelWithBrand(carBrandService.findCarBrandByName(brandName)))
-                .and(new CarModelWithType(carTypeService.findCarTypeByName(typeName)));
-        return carModelService.findAll(pageNumber, pageSize, sort, spec).getContent();
+        return carModelService.findAll(pageNumber, pageSize, sort, modelName, year, brandName, typeName).getContent();
     }
 
     @PostMapping
