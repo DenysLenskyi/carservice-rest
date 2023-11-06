@@ -55,7 +55,7 @@ class CarModelControllerTest {
 
     @Test
     void getAllCarModelTest() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/all")
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/search")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -67,7 +67,7 @@ class CarModelControllerTest {
 
     @Test
     void getAllCarModelTestPaginated() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/all?pageSize=5")
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/search?pageSize=5")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -80,7 +80,7 @@ class CarModelControllerTest {
     @Test
     void getAllCarModelTestPaginatedWithName() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&modelName=Armada")
+                                "/api/v1/model/search?pageSize=5&modelName=Armada")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -97,7 +97,7 @@ class CarModelControllerTest {
     @Test
     void getAllCarModelTestPaginatedWithNameAndYear() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&modelName=Armada&year=2017")
+                                "/api/v1/model/search?pageSize=5&modelName=Armada&year=2017")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -115,7 +115,7 @@ class CarModelControllerTest {
     @Test
     void getAllCarModelTestPaginatedWithBrand() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&brandName=BMW")
+                                "/api/v1/model/search?pageSize=5&brandName=BMW")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -132,7 +132,7 @@ class CarModelControllerTest {
     void getAllCarModelTestPaginatedWithType() throws Exception {
         CarTypeDto sedanDto = carTypeService.findByName("Sedan");
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&typeName=Sedan")
+                                "/api/v1/model/search?pageSize=5&typeName=Sedan")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -149,7 +149,7 @@ class CarModelControllerTest {
     void getAllCarModelTestPaginatedWithAllFields() throws Exception {
         CarTypeDto suvDto = carTypeService.findByName("SUV");
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&modelName=Armada&year=2005&brandName=nissan&typeName=SUV")
+                                "/api/v1/model/search?pageSize=5&modelName=Armada&year=2005&brandName=nissan&typeName=SUV")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

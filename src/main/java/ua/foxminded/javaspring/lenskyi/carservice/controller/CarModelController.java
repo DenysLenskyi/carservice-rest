@@ -32,7 +32,7 @@ public class CarModelController {
         this.carTypeService = carTypeService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/search")
     public List<CarModelDto> findAll(@RequestParam(defaultValue = "0") int pageNumber,
                                      @RequestParam(defaultValue = "0") int pageSize,
                                      @RequestParam(defaultValue = "id") String sort,
