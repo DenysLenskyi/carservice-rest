@@ -1,6 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.carservice.service.impl;
 
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -95,17 +96,9 @@ public class CarModelServiceImpl implements CarModelService {
 
     private String generateCarModelId() {
         LOGGER.info("Generating CarModel id");
-        final String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        final int length = 10;
-        StringBuilder carModelId = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(characters.length());
-            char randomChar = characters.charAt(randomIndex);
-            carModelId.append(randomChar);
-        }
+        String id = RandomStringUtils.randomAlphanumeric(10);
         LOGGER.info("CarModel id has been generated");
-        return carModelId.toString();
+        return id;
     }
 
     @Override
