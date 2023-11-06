@@ -67,7 +67,7 @@ class CarBrandControllerTest {
     void getCarBrandByIdDoesNotExist() throws Exception {
         long wrongId = carBrandService.findAll().get(0).getId() - 500L;
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/brand/" + wrongId))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(ID_DOES_NOT_EXIST_ERROR_MESSAGE));
@@ -87,7 +87,7 @@ class CarBrandControllerTest {
     void getCarBrandByNameDoesNotExist() throws Exception {
         final String wrongName = "doesntexist";
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/brand/by-name/" + wrongName))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(NAME_DOES_NOT_EXIST_ERROR_MESSAGE));
@@ -116,7 +116,7 @@ class CarBrandControllerTest {
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE));
@@ -146,7 +146,7 @@ class CarBrandControllerTest {
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE));
@@ -162,7 +162,7 @@ class CarBrandControllerTest {
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(ID_DOES_NOT_EXIST_ERROR_MESSAGE));
@@ -185,7 +185,7 @@ class CarBrandControllerTest {
         long wrongId = carBrandDto.getId() - 500L;
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .delete("/api/v1/brand/" + wrongId))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(ID_DOES_NOT_EXIST_ERROR_MESSAGE));

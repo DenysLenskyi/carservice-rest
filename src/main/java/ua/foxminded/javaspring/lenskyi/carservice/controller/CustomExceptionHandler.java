@@ -29,6 +29,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
         return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.CONFLICT, request);
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }

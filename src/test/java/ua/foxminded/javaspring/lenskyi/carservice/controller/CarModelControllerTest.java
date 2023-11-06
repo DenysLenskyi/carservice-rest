@@ -206,7 +206,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(BRAND_ID_DOES_NOT_EXIST));
@@ -228,7 +228,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(TYPE_ID_DOES_NOT_EXIST));
@@ -248,7 +248,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
@@ -315,7 +315,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(MODEL_ID_DOES_NOT_EXIST));
@@ -335,7 +335,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(TYPE_ID_DOES_NOT_EXIST));
@@ -355,7 +355,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(BRAND_ID_DOES_NOT_EXIST));
