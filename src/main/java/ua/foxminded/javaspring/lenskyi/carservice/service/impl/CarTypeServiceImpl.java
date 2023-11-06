@@ -17,9 +17,9 @@ import java.util.List;
 @Service
 public class CarTypeServiceImpl implements CarTypeService {
 
-    private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with id=";
-    private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with name=";
-    private static final String ERROR_NOT_UNIQUE_CAR_TYPE_NAME = "Error. Not unique CarType name=";
+    private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with id %d";
+    private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with name %s";
+    private static final String ERROR_NOT_UNIQUE_CAR_TYPE_NAME = "Error. Not unique CarType name %s";
     private final CarTypeRepository carTypeRepository;
     private final CarTypeDtoMapper mapper;
 
@@ -51,14 +51,14 @@ public class CarTypeServiceImpl implements CarTypeService {
     public CarTypeDto findById(Long id) {
         return carTypeRepository.findById(id)
                 .map(mapper::carTypeEntityToCarTypeDto)
-                .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id));
+                .orElseThrow(() -> new IdDoesNotExistException(String.format(ID_DOES_NOT_EXIST_ERROR_MESSAGE, id)));
     }
 
     @Override
     public CarTypeDto findByName(String name) {
         return carTypeRepository.findCarTypeByName(name)
                 .map(mapper::carTypeEntityToCarTypeDto)
-                .orElseThrow(() -> new NameDoesNotExistException(NAME_DOES_NOT_EXIST_ERROR_MESSAGE + name));
+                .orElseThrow(() -> new NameDoesNotExistException(String.format(NAME_DOES_NOT_EXIST_ERROR_MESSAGE, name)));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CarTypeServiceImpl implements CarTypeService {
     @Transactional
     public CarTypeDto createCarType(CarTypeDto carTypeDto) {
         if (carTypeRepository.existsByName(carTypeDto.getName())) {
-            throw new TheNameIsNotUniqueException(ERROR_NOT_UNIQUE_CAR_TYPE_NAME + carTypeDto.getName());
+            throw new TheNameIsNotUniqueException(String.format(ERROR_NOT_UNIQUE_CAR_TYPE_NAME, carTypeDto.getName()));
         }
         CarType carType = new CarType();
         carType.setName(carTypeDto.getName());
@@ -83,9 +83,9 @@ public class CarTypeServiceImpl implements CarTypeService {
     @Transactional
     public CarTypeDto updateCarType(CarTypeDto carTypeDto) {
         CarType carType = carTypeRepository.findById(carTypeDto.getId())
-                .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + carTypeDto.getId()));
+                .orElseThrow(() -> new IdDoesNotExistException(String.format(ID_DOES_NOT_EXIST_ERROR_MESSAGE, carTypeDto.getId())));
         if (carTypeRepository.existsByName(carTypeDto.getName()) && (!carType.getName().equals(carTypeDto.getName()))) {
-            throw new TheNameIsNotUniqueException(ERROR_NOT_UNIQUE_CAR_TYPE_NAME + carTypeDto.getName());
+            throw new TheNameIsNotUniqueException(String.format(ERROR_NOT_UNIQUE_CAR_TYPE_NAME, carTypeDto.getName()));
         }
         carType.setName(carTypeDto.getName());
         carTypeRepository.saveAndFlush(carType);
@@ -96,7 +96,7 @@ public class CarTypeServiceImpl implements CarTypeService {
     @Transactional
     public void deleteCarType(Long id) {
         if (!carTypeRepository.existsById(id)) {
-            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
+            throw new IdDoesNotExistException(String.format(ID_DOES_NOT_EXIST_ERROR_MESSAGE, id));
         }
         carTypeRepository.deleteById(id);
     }

@@ -34,9 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class CarModelControllerTest {
 
-    private static final String BRAND_ID_DOES_NOT_EXIST = "There is no CarBrand with id=";
-    private static final String TYPE_ID_DOES_NOT_EXIST = "There is no CarType with id=";
-    private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id=";
+    private static final String BRAND_ID_DOES_NOT_EXIST = "There is no CarBrand with id";
+    private static final String TYPE_ID_DOES_NOT_EXIST = "There is no CarType with id";
+    private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
             "This CarModel name, year, Brand already exist";
     private final static int EXPECTED_NUM_MODELS = 9836;
