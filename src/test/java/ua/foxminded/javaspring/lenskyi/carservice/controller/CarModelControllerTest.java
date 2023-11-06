@@ -37,6 +37,7 @@ class CarModelControllerTest {
     private static final String BRAND_DOES_NOT_EXIST = "There is no CarBrand with";
     private static final String TYPE_DOES_NOT_EXIST = "There is no CarType with";
     private static final String MODEL_DOES_NOT_EXIST = "There is no CarModel with";
+    private static final String CAR_TYPES_NOT_FOUND_BY_NAME = "No CarType found by provided names";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
             "This CarModel name, year, Brand already exist";
     private final static int EXPECTED_NUM_MODELS = 9836;
@@ -231,7 +232,7 @@ class CarModelControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(TYPE_DOES_NOT_EXIST));
+        assertTrue(content.contains(CAR_TYPES_NOT_FOUND_BY_NAME));
     }
 
     @Test
@@ -338,7 +339,7 @@ class CarModelControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(TYPE_DOES_NOT_EXIST));
+        assertTrue(content.contains(CAR_TYPES_NOT_FOUND_BY_NAME));
     }
 
     @Test
