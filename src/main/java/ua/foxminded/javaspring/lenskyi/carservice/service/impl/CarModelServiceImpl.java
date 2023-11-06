@@ -14,6 +14,7 @@ import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
 import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarModelDtoMapper;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.CarModelNameYearBrandConstraintViolationException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.IdDoesNotExistException;
+import ua.foxminded.javaspring.lenskyi.carservice.exception.NameDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarBrand;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarModel;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarType;
@@ -35,8 +36,8 @@ import java.util.stream.Collectors;
 @Service
 public class CarModelServiceImpl implements CarModelService {
 
-    private static final String BRAND_ID_DOES_NOT_EXIST = "There is no CarBrand with id %d";
-    private static final String TYPE_ID_DOES_NOT_EXIST = "There is no CarType with id %d";
+    private static final String BRAND_NAME_DOES_NOT_EXIST = "There is no CarBrand with name %s";
+    private static final String TYPE_NAME_DOES_NOT_EXIST = "There is no CarType with name %s";
     private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id %s";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
             "This CarModel name, year, Brand already exist";
@@ -80,16 +81,11 @@ public class CarModelServiceImpl implements CarModelService {
     public CarModelDto createCarModel(CarModelDto carModelDto) {
         LOGGER.info("Creating new CarModel");
         CarModel carModel = new CarModel();
-        String carModelId = generateCarModelId();
-        while (carModelRepository.existsById(carModelId)) {
-            carModelId = generateCarModelId();
-        }
-        carModel.setId(carModelId);
         carModel.setName(carModelDto.getName());
         carModel.setYear(carModelDto.getYear());
-        CarBrand carBrand = carBrandRepository.findById(carModelDto.getCarBrandDto().getId())
-                .orElseThrow(() -> new IdDoesNotExistException(
-                        String.format(BRAND_ID_DOES_NOT_EXIST, carModelDto.getCarBrandDto().getId())
+        CarBrand carBrand = carBrandRepository.findCarBrandByName(carModelDto.getCarBrandDto().getName())
+                .orElseThrow(() -> new NameDoesNotExistException(
+                        String.format(BRAND_NAME_DOES_NOT_EXIST, carModelDto.getCarBrandDto().getName())
                 ));
         if (carModelRepository.existsByNameAndYearAndCarBrand(carModel.getName(), carModel.getYear(),
                 carBrand)) {
@@ -98,12 +94,17 @@ public class CarModelServiceImpl implements CarModelService {
         }
         carModel.setCarBrand(carBrand);
         Set<CarType> carTypes = carModelDto.getCarTypeDtos().stream()
-                .map(carTypeDto -> carTypeRepository.findById(carTypeDto.getId())
-                        .orElseThrow(() -> new IdDoesNotExistException(
-                                String.format(TYPE_ID_DOES_NOT_EXIST, carTypeDto.getId())
+                .map(carTypeDto -> carTypeRepository.findCarTypeByName(carTypeDto.getName())
+                        .orElseThrow(() -> new NameDoesNotExistException(
+                                String.format(TYPE_NAME_DOES_NOT_EXIST, carTypeDto.getId())
                         )))
                 .collect(Collectors.toSet());
         carModel.setCarTypes(carTypes);
+        String carModelId = generateCarModelId();
+        while (carModelRepository.existsById(carModelId)) {
+            carModelId = generateCarModelId();
+        }
+        carModel.setId(carModelId);
         carModelRepository.saveAndFlush(carModel);
         LOGGER.info("CarModel has been created");
         return mapper.carModelEntityToCarModelDto(carModel);
@@ -138,9 +139,9 @@ public class CarModelServiceImpl implements CarModelService {
             carModel.setYear(carModelDto.getYear());
         }
         if (carModelDto.getCarBrandDto() != null && carModelDto.getCarBrandDto().getId() != null) {
-            CarBrand carBrand = carBrandRepository.findById(carModelDto.getCarBrandDto().getId())
-                    .orElseThrow(() -> new IdDoesNotExistException(
-                            String.format(BRAND_ID_DOES_NOT_EXIST, carModelDto.getCarBrandDto().getId())
+            CarBrand carBrand = carBrandRepository.findCarBrandByName(carModelDto.getCarBrandDto().getName())
+                    .orElseThrow(() -> new NameDoesNotExistException(
+                            String.format(BRAND_NAME_DOES_NOT_EXIST, carModelDto.getCarBrandDto().getName())
                     ));
             carModel.setCarBrand(carBrand);
         }
@@ -150,9 +151,9 @@ public class CarModelServiceImpl implements CarModelService {
         if (carModelDto.getCarTypeDtos() != null && !carModelDto.getCarTypeDtos().isEmpty() &&
                 !carModelDto.getCarTypeDtos().contains(null)) {
             Set<CarType> carTypes = carModelDto.getCarTypeDtos().stream()
-                    .map(carTypeDto -> carTypeRepository.findById(carTypeDto.getId())
-                            .orElseThrow(() -> new IdDoesNotExistException(
-                                    String.format(TYPE_ID_DOES_NOT_EXIST, carTypeDto.getId())
+                    .map(carTypeDto -> carTypeRepository.findCarTypeByName(carTypeDto.getName())
+                            .orElseThrow(() -> new NameDoesNotExistException(
+                                    String.format(TYPE_NAME_DOES_NOT_EXIST, carTypeDto.getId())
                             )))
                     .collect(Collectors.toSet());
             carModel.setCarTypes(carTypes);
