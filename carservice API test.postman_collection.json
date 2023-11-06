@@ -359,31 +359,6 @@
 					"response": []
 				},
 				{
-					"name": "get_all_brand_paginated_sorted",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/brand/all/0/64/name",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"brand",
-								"all",
-								"0",
-								"64",
-								"name"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "get_brand_by_id",
 					"request": {
 						"method": "GET",
@@ -935,7 +910,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"id\": \"1\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"id\": \"3\"\n        },\n        {\n            \"id\": \"4\"\n        },\n        {\n            \"id\": \"5\"\n        }\n    ]\n}"
+							"raw": "{\n    \"name\": \"test\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"name\": \"BMW\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"Sedan\"\n        },\n        {\n            \"name\": \"SUV\"\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/model",
@@ -966,7 +941,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"id\": \"10\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"id\": \"3\"\n        },\n        {\n            \"id\": \"1\"\n        }\n    ]\n}"
+							"raw": "{\n    \"name\": \"test name\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"name\": \"invalid name\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"SUV\"\n        },\n        {\n            \"name\": \"Suvsuv\"\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/model",
@@ -997,7 +972,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Armada\",\n    \"year\": \"2005\",\n    \"carBrandDto\": {\n        \"id\": \"63\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"id\": \"1\"\n        },\n        {\n            \"id\": \"2\"\n        }\n    ]\n}"
+							"raw": "{\n    \"name\": \"Armada\",\n    \"year\": \"2005\",\n    \"carBrandDto\": {\n        \"name\": \"Nissan\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"SUV\"\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/model",
@@ -1028,7 +1003,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"00YMth3mul\",\n    \"name\": \"Armada\",\n    \"year\": \"2005\",\n    \"carBrandDto\": {\n        \"id\": \"63\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"id\": \"1\"\n        },\n        {\n            \"id\": \"2\"\n        }\n    ]\n}"
+							"raw": "{\n    \"id\": \"00YMth3mul\",\n    \"name\": \"Armada\",\n    \"year\": \"2005\",\n    \"carBrandDto\": {\n        \"name\": \"Nissan\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"SUV\"\n        },\n        {\n            \"name\": \"Sedan\"\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/model",
@@ -1112,7 +1087,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"00NyD3beGf\",\n    \"name\": \"Musmus\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"id\": \"1\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"id\": \"1\"\n        },\n        {\n            \"id\": \"2\"\n        },\n        {\n            \"id\": \"3\"\n        }\n    ]\n}"
+							"raw": "{\n    \"id\": \"00NyD3beGf\",\n    \"name\": \"Musmus\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"name\": \"Ford\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"Sedan\"\n        }\n    ]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/model",
@@ -1167,7 +1142,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all",
+							"raw": "http://localhost:8080/api/v1/model/search",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1177,339 +1152,7 @@
 								"api",
 								"v1",
 								"model",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=20",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=20_pageNumber=3",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&pageNumber=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "pageNumber",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=20_pageNumber=3_sort=name",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&pageNumber=3&sort=name",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "pageNumber",
-									"value": "3"
-								},
-								{
-									"key": "sort",
-									"value": "name"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=20_pageNumber=3_sort=id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&pageNumber=3&sort=id",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "pageNumber",
-									"value": "3"
-								},
-								{
-									"key": "sort",
-									"value": "id"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=20_pageNumber=3_sort=wrong_field",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&pageNumber=3&sort=iddddd",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "pageNumber",
-									"value": "3"
-								},
-								{
-									"key": "sort",
-									"value": "iddddd"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=20_pageNumber=3_sort=year",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=400&pageNumber=3&sort=year",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "400"
-								},
-								{
-									"key": "pageNumber",
-									"value": "3"
-								},
-								{
-									"key": "sort",
-									"value": "year"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_pageSize=200&year=2005",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&year=2005",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "year",
-									"value": "2005"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_by_name",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&modelName=Mustang",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "modelName",
-									"value": "Mustang"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_by_brand",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&brandName=Ford",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "brandName",
-									"value": "Ford"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_all_by_type",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/model/all?pageSize=20&typeName=Sedan",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"model",
-								"all"
-							],
-							"query": [
-								{
-									"key": "pageSize",
-									"value": "20"
-								},
-								{
-									"key": "typeName",
-									"value": "Sedan"
-								}
+								"search"
 							]
 						}
 					},

@@ -38,7 +38,6 @@ import java.util.Set;
 public class CarModelServiceImpl implements CarModelService {
 
     private static final String BRAND_NAME_DOES_NOT_EXIST = "There is no CarBrand with name %s";
-    private static final String TYPE_NAME_DOES_NOT_EXIST = "There is no CarType with name %s";
     private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id %s";
     private static final String CAR_TYPES_NOT_FOUND_BY_NAME = "No CarType found by provided names";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
