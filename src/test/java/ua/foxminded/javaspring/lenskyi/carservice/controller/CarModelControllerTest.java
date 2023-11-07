@@ -363,24 +363,24 @@ class CarModelControllerTest {
         assertTrue(content.contains(BRAND_DOES_NOT_EXIST));
     }
 
-//    @Test
-//    void updateCarModelConstraintViolationTest() throws Exception {
-//        List<CarModel> carModels = carModelRepository.findAll();
-//        CarModelDto carModelDto1 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(10));
-//        CarModelDto carModelDto2 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(1000));
-//        carModelDto2.setName(carModelDto1.getName());
-//        carModelDto2.setYear(carModelDto1.getYear());
-//        carModelDto2.setCarBrandDto(carModelDto1.getCarBrandDto());
-//        MvcResult result = mvc.perform(MockMvcRequestBuilders
-//                        .put("/api/v1/model")
-//                        .content(objectMapper.writeValueAsString(carModelDto2))
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isBadRequest())
-//                .andReturn();
-//        String content = result.getResponse().getContentAsString();
-//        assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
-//    }
+    @Test
+    void updateCarModelConstraintViolationTest() throws Exception {
+        List<CarModel> carModels = carModelRepository.findAll();
+        CarModelDto carModelDto1 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(10));
+        CarModelDto carModelDto2 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(1000));
+        carModelDto2.setName(carModelDto1.getName());
+        carModelDto2.setYear(carModelDto1.getYear());
+        carModelDto2.setCarBrandDto(carModelDto1.getCarBrandDto());
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                        .put("/api/v1/model")
+                        .content(objectMapper.writeValueAsString(carModelDto2))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
+    }
 
     @Test
     void deleteCarModelTest() throws Exception {

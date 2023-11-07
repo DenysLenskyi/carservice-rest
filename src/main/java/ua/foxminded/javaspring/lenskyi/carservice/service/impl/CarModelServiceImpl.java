@@ -142,14 +142,13 @@ public class CarModelServiceImpl implements CarModelService {
                     .orElseThrow(() -> new NameDoesNotExistException(
                             String.format(BRAND_NAME_DOES_NOT_EXIST, carModelDto.getCarBrandDto().getName())
                     ));
+            carModelRepository.findByNameAndYearAndCarBrand(carModel.getName(), carModel.getYear(), carBrand)
+                    .ifPresent(model -> {
+                        if (!model.getId().equals(carModel.getId()))
+                            throw new CarModelNameYearBrandConstraintViolationException(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE);
+                    });
             carModel.setCarBrand(carBrand);
         }
-
-        carModelRepository.findByNameAndYearAndCarBrand(carModel.getName(), carModel.getYear(), carModel.getCarBrand())
-                .ifPresent(model -> {
-                    if (model.getId().equals(carModel.getId())) throw new CarModelNameYearBrandConstraintViolationException(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE);
-                });
-
         if (carModelDto.getCarTypeDtos() != null && !carModelDto.getCarTypeDtos().isEmpty() &&
                 !carModelDto.getCarTypeDtos().contains(null)) {
             List<String> carTypeNames = carModelDto.getCarTypeDtos().stream()
