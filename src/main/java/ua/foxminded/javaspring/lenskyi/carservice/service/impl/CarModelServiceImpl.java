@@ -40,6 +40,7 @@ public class CarModelServiceImpl implements CarModelService {
     private static final String BRAND_NAME_DOES_NOT_EXIST = "There is no CarBrand with name %s";
     private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id %s";
     private static final String CAR_TYPES_NOT_FOUND_BY_NAME = "No CarType found by provided names";
+    private static final String CAR_TYPE_NAME_NOT_FOUND = "One or more CarTypes not found by names";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
             "This CarModel name, year, Brand already exist";
     private static final Logger LOGGER = LoggerFactory.getLogger(CarModelServiceImpl.class);
@@ -144,7 +145,10 @@ public class CarModelServiceImpl implements CarModelService {
             carModel.setCarBrand(carBrand);
         }
 
-        // TODO | if a model exist by updated name, year, brand -> find that model, if id not equal carModel.id then throw constraint violation  exception
+        carModelRepository.findByNameAndYearAndCarBrand(carModel.getName(), carModel.getYear(), carModel.getCarBrand())
+                .ifPresent(model -> {
+                    if (model.getId().equals(carModel.getId())) throw new CarModelNameYearBrandConstraintViolationException(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE);
+                });
 
         if (carModelDto.getCarTypeDtos() != null && !carModelDto.getCarTypeDtos().isEmpty() &&
                 !carModelDto.getCarTypeDtos().contains(null)) {
@@ -153,6 +157,7 @@ public class CarModelServiceImpl implements CarModelService {
                     .toList();
             Set<CarType> carTypes = carTypeRepository.findCarTypeByNameIn(carTypeNames);
             if (carTypes.isEmpty()) throw new NameDoesNotExistException(CAR_TYPES_NOT_FOUND_BY_NAME);
+            if (carTypes.size() != carTypeNames.size()) throw new NameDoesNotExistException(CAR_TYPE_NAME_NOT_FOUND);
             carModel.setCarTypes(carTypes);
         }
         carModelRepository.saveAndFlush(carModel);
