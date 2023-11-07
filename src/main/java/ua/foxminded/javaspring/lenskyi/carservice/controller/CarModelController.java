@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarModelDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarModelService;
 
 import java.util.List;

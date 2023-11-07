@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarBrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 
 import java.util.List;

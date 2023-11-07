@@ -1,7 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.carservice.service;
 
 import org.springframework.data.domain.Page;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarTypeDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarTypeDto;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarType;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ua.foxminded.javaspring.lenskyi.carservice.controller.dto;
+package ua.foxminded.javaspring.lenskyi.carservice.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

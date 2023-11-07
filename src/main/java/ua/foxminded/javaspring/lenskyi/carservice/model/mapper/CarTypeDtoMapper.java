@@ -1,7 +1,7 @@
-package ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper;
+package ua.foxminded.javaspring.lenskyi.carservice.model.mapper;
 
 import org.mapstruct.Mapper;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarTypeDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarTypeDto;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarType;
 
 @Mapper(componentModel = "spring")

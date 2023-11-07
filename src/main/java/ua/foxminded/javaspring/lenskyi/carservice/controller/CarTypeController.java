@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarTypeDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarTypeDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarTypeService;
 
 import java.util.List;
