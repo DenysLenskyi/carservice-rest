@@ -1,5 +1,7 @@
 package ua.foxminded.javaspring.lenskyi.carservice.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -50,6 +52,9 @@ public class CarModelServiceImpl implements CarModelService {
     private CarBrandService carBrandService;
     private CarTypeService carTypeService;
     private CarModelDtoMapper mapper;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public CarModelServiceImpl(CarModelRepository carModelRepository, CarBrandRepository carBrandRepository,
                                CarTypeRepository carTypeRepository, CarBrandService carBrandService,
@@ -133,6 +138,7 @@ public class CarModelServiceImpl implements CarModelService {
                 .orElseThrow(() -> new IdDoesNotExistException(
                         String.format(MODEL_ID_DOES_NOT_EXIST, carModelDto.getId())
                 ));
+        entityManager.detach(carModel);
         Optional.ofNullable(carModelDto.getName())
                 .ifPresent(carModel::setName);
         Optional.ofNullable(carModelDto.getYear())

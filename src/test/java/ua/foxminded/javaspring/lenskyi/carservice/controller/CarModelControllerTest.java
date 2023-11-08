@@ -383,6 +383,22 @@ class CarModelControllerTest {
     }
 
     @Test
+    void updateCarModelOneFieldConstraintViolationTest() throws Exception {
+        List<CarModel> carModels = carModelRepository.findAll();
+        CarModelDto carModelDto2 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(1000));
+        carModelDto2.setYear(carModelDto2.getYear() + 1);
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                        .put("/api/v1/model")
+                        .content(objectMapper.writeValueAsString(carModelDto2))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
+    }
+
+    @Test
     void deleteCarModelTest() throws Exception {
         String carModelId = carModelRepository.findAll().get(200).getName();
         mvc.perform(MockMvcRequestBuilders
