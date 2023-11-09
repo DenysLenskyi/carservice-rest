@@ -96,14 +96,8 @@ public class CarBrandServiceImpl implements CarBrandService {
         Page<CarBrand> pageCarBrand = carBrandRepository.findAll(PageRequest.of(
                 pageNumber, pageSize, Sort.by(sort)
         ));
-        List<CarBrandDto> carBrandDtoList = pageCarBrand.getContent().stream()
+        return pageCarBrand.getContent().stream()
                 .map(mapper::carBrandEntityToCarBrandDto)
                 .toList();
-        return new PageImpl<>(carBrandDtoList, PageRequest.of(
-                pageCarBrand.getNumber(),
-                pageCarBrand.getSize(),
-                pageCarBrand.getSort()),
-                pageCarBrand.getTotalElements())
-                .getContent();
     }
 }

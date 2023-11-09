@@ -76,15 +76,9 @@ public class CarModelServiceImpl implements CarModelService {
                 .and(new CarModelWithBrand(carBrandService.findCarBrandByName(brandName)))
                 .and(new CarModelWithType(carTypeService.findCarTypeByName(typeName)));
         Page<CarModel> carModelPage = carModelRepository.findAll(spec, PageRequest.of(pageNumber, pageSize, Sort.by(sort)));
-        List<CarModelDto> carModelDtoList = carModelPage.getContent().stream()
+        return carModelPage.getContent().stream()
                 .map(mapper::carModelEntityToCarModelDto)
                 .toList();
-        return new PageImpl<>(carModelDtoList, PageRequest.of(
-                carModelPage.getNumber(),
-                carModelPage.getSize(),
-                carModelPage.getSort()),
-                carModelPage.getTotalElements())
-                .getContent();
     }
 
     @Override

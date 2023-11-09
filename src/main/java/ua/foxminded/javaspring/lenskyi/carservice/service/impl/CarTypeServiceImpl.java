@@ -32,15 +32,9 @@ public class CarTypeServiceImpl implements CarTypeService {
     public List<CarTypeDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
         if (pageSize == 0) pageSize = carTypeRepository.findAll().size();
         Page<CarType> carTypePage = carTypeRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sort)));
-        List<CarTypeDto> carTypeDtoList = carTypePage.getContent().stream()
+        return carTypePage.getContent().stream()
                 .map(mapper::carTypeEntityToCarTypeDto)
                 .toList();
-        return new PageImpl<>(carTypeDtoList, PageRequest.of(
-                carTypePage.getNumber(),
-                carTypePage.getSize(),
-                carTypePage.getSort()),
-                carTypePage.getTotalElements())
-                .getContent();
     }
 
     @Override
