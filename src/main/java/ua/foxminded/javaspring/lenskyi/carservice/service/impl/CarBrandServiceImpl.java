@@ -91,7 +91,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
-    public Page<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
+    public List<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
         if (pageSize == 0) pageSize = carBrandRepository.findAll().size();
         Page<CarBrand> pageCarBrand = carBrandRepository.findAll(PageRequest.of(
                 pageNumber, pageSize, Sort.by(sort)
@@ -100,6 +100,10 @@ public class CarBrandServiceImpl implements CarBrandService {
                 .map(mapper::carBrandEntityToCarBrandDto)
                 .toList();
         return new PageImpl<>(carBrandDtoList, PageRequest.of(
-                pageCarBrand.getNumber(), pageCarBrand.getSize(), pageCarBrand.getSort()), pageCarBrand.getTotalElements());
+                pageCarBrand.getNumber(),
+                pageCarBrand.getSize(),
+                pageCarBrand.getSort()),
+                pageCarBrand.getTotalElements())
+                .getContent();
     }
 }

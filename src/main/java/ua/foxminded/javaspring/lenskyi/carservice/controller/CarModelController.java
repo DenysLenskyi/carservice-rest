@@ -27,7 +27,7 @@ public class CarModelController {
                                      @RequestParam(required = false) Integer year,
                                      @RequestParam(required = false) String brandName,
                                      @RequestParam(required = false) String typeName) {
-        return carModelService.findAll(pageNumber, pageSize, sort, modelName, year, brandName, typeName).getContent();
+        return carModelService.findAll(pageNumber, pageSize, sort, modelName, year, brandName, typeName);
     }
 
     @PostMapping

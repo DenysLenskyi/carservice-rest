@@ -1,6 +1,5 @@
 package ua.foxminded.javaspring.lenskyi.carservice.service;
 
-import org.springframework.data.domain.Page;
 import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarBrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.model.CarBrand;
 
@@ -21,5 +20,5 @@ public interface CarBrandService {
 
     void deleteCarBrand(Long id);
 
-    Page<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort);
+    List<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort);
 }

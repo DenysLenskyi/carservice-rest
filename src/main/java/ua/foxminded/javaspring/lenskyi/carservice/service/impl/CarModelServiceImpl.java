@@ -68,7 +68,7 @@ public class CarModelServiceImpl implements CarModelService {
     }
 
     @Override
-    public Page<CarModelDto> findAll(Integer pageNumber, Integer pageSize, String sort,
+    public List<CarModelDto> findAll(Integer pageNumber, Integer pageSize, String sort,
                                      String modelName, Integer year, String brandName, String typeName) {
         if (pageSize == 0) pageSize = carModelRepository.findAll().size();
         Specification<CarModel> spec = Specification.where(new CarModelWithYear(year))
@@ -80,7 +80,11 @@ public class CarModelServiceImpl implements CarModelService {
                 .map(mapper::carModelEntityToCarModelDto)
                 .toList();
         return new PageImpl<>(carModelDtoList, PageRequest.of(
-                carModelPage.getNumber(), carModelPage.getSize(), carModelPage.getSort()), carModelPage.getTotalElements());
+                carModelPage.getNumber(),
+                carModelPage.getSize(),
+                carModelPage.getSort()),
+                carModelPage.getTotalElements())
+                .getContent();
     }
 
     @Override

@@ -24,7 +24,7 @@ public class CarTypeController {
     public List<CarTypeDto> findAll(@RequestParam(defaultValue = "0") int pageNumber,
                                     @RequestParam(defaultValue = "0") int pageSize,
                                     @RequestParam(defaultValue = "id") String sort) {
-        return carTypeService.findAllPaginated(pageNumber, pageSize, sort).getContent();
+        return carTypeService.findAllPaginated(pageNumber, pageSize, sort);
     }
 
     @GetMapping("/{id}")
