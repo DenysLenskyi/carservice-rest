@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarBrandDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class CarBrandController {
     public List<CarBrandDto> findAll(@RequestParam(defaultValue = "0") int pageNumber,
                                      @RequestParam(defaultValue = "0") int pageSize,
                                      @RequestParam(defaultValue = "id") String sort) {
-        return carBrandService.findAllPaginated(pageNumber, pageSize, sort).getContent();
+        return carBrandService.findAllPaginated(pageNumber, pageSize, sort);
     }
 
     @GetMapping("/{id}")

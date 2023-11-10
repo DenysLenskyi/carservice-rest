@@ -13,10 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarModelDto;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarTypeDto;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarModelDtoMapper;
+import ua.foxminded.javaspring.lenskyi.carservice.model.CarModel;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarBrandDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarModelDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarTypeDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.mapper.CarModelDtoMapper;
 import ua.foxminded.javaspring.lenskyi.carservice.repository.CarModelRepository;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarBrandService;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarTypeService;
@@ -34,9 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class CarModelControllerTest {
 
-    private static final String BRAND_ID_DOES_NOT_EXIST = "There is no CarBrand with id=";
-    private static final String TYPE_ID_DOES_NOT_EXIST = "There is no CarType with id=";
-    private static final String MODEL_ID_DOES_NOT_EXIST = "There is no CarModel with id=";
+    private static final String BRAND_DOES_NOT_EXIST = "There is no CarBrand with";
+    private static final String TYPE_DOES_NOT_EXIST = "There is no CarType with";
+    private static final String MODEL_DOES_NOT_EXIST = "There is no CarModel with";
+    private static final String CAR_TYPES_NOT_FOUND_BY_NAME = "No CarType found by provided names";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
             "This CarModel name, year, Brand already exist";
     private final static int EXPECTED_NUM_MODELS = 9836;
@@ -55,7 +57,7 @@ class CarModelControllerTest {
 
     @Test
     void getAllCarModelTest() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/all")
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/search")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -67,7 +69,7 @@ class CarModelControllerTest {
 
     @Test
     void getAllCarModelTestPaginated() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/all?pageSize=5")
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/v1/model/search?pageSize=5")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -80,7 +82,7 @@ class CarModelControllerTest {
     @Test
     void getAllCarModelTestPaginatedWithName() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&modelName=Armada")
+                                "/api/v1/model/search?pageSize=5&modelName=Armada")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -97,7 +99,7 @@ class CarModelControllerTest {
     @Test
     void getAllCarModelTestPaginatedWithNameAndYear() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&modelName=Armada&year=2017")
+                                "/api/v1/model/search?pageSize=5&modelName=Armada&year=2017")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -115,7 +117,7 @@ class CarModelControllerTest {
     @Test
     void getAllCarModelTestPaginatedWithBrand() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&brandName=BMW")
+                                "/api/v1/model/search?pageSize=5&brandName=BMW")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -132,7 +134,7 @@ class CarModelControllerTest {
     void getAllCarModelTestPaginatedWithType() throws Exception {
         CarTypeDto sedanDto = carTypeService.findByName("Sedan");
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&typeName=Sedan")
+                                "/api/v1/model/search?pageSize=5&typeName=Sedan")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -149,7 +151,7 @@ class CarModelControllerTest {
     void getAllCarModelTestPaginatedWithAllFields() throws Exception {
         CarTypeDto suvDto = carTypeService.findByName("SUV");
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/model/all?pageSize=5&modelName=Armada&year=2005&brandName=nissan&typeName=SUV")
+                                "/api/v1/model/search?pageSize=5&modelName=Armada&year=2005&brandName=nissan&typeName=SUV")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -191,7 +193,7 @@ class CarModelControllerTest {
     }
 
     @Test
-    void createCarModelWrongBrandIdTest() throws Exception {
+    void createCarModelWrongBrandNameTest() throws Exception {
         CarModelDto carModelDto = new CarModelDto();
         CarTypeDto suvDto = carTypeService.findByName("SUV");
         CarBrandDto wrongBrandDto = new CarBrandDto();
@@ -206,10 +208,10 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(BRAND_ID_DOES_NOT_EXIST));
+        assertTrue(content.contains(BRAND_DOES_NOT_EXIST));
     }
 
     @Test
@@ -228,10 +230,10 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(TYPE_ID_DOES_NOT_EXIST));
+        assertTrue(content.contains(CAR_TYPES_NOT_FOUND_BY_NAME));
     }
 
     @Test
@@ -248,7 +250,7 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
         assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
@@ -315,14 +317,14 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(MODEL_ID_DOES_NOT_EXIST));
+        assertTrue(content.contains(MODEL_DOES_NOT_EXIST));
     }
 
     @Test
-    void updateCarModelWrongCarTypeIdTest() throws Exception {
+    void updateCarModelWrongCarTypeNameTest() throws Exception {
         CarModelDto carModelDto = carModelDtoMapper.carModelEntityToCarModelDto(
                 carModelRepository.findAll().get(100)
         );
@@ -335,14 +337,14 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(TYPE_ID_DOES_NOT_EXIST));
+        assertTrue(content.contains(CAR_TYPES_NOT_FOUND_BY_NAME));
     }
 
     @Test
-    void updateCarModelWrongBrandIdTest() throws Exception {
+    void updateCarModelWrongBrandNameTest() throws Exception {
         CarModelDto carModelDto = carModelDtoMapper.carModelEntityToCarModelDto(
                 carModelRepository.findAll().get(100)
         );
@@ -355,10 +357,45 @@ class CarModelControllerTest {
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isConflict())
+                .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
-        assertTrue(content.contains(BRAND_ID_DOES_NOT_EXIST));
+        assertTrue(content.contains(BRAND_DOES_NOT_EXIST));
+    }
+
+    @Test
+    void updateCarModelConstraintViolationTest() throws Exception {
+        List<CarModel> carModels = carModelRepository.findAll();
+        CarModelDto carModelDto1 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(10));
+        CarModelDto carModelDto2 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(1000));
+        carModelDto2.setName(carModelDto1.getName());
+        carModelDto2.setYear(carModelDto1.getYear());
+        carModelDto2.setCarBrandDto(carModelDto1.getCarBrandDto());
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                        .put("/api/v1/model")
+                        .content(objectMapper.writeValueAsString(carModelDto2))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
+    }
+
+    @Test
+    void updateCarModelOneFieldConstraintViolationTest() throws Exception {
+        List<CarModel> carModels = carModelRepository.findAll();
+        CarModelDto carModelDto2 = carModelDtoMapper.carModelEntityToCarModelDto(carModels.get(1000));
+        carModelDto2.setYear(carModelDto2.getYear() + 1);
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                        .put("/api/v1/model")
+                        .content(objectMapper.writeValueAsString(carModelDto2))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertTrue(content.contains(MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE));
     }
 
     @Test

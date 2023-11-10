@@ -3,8 +3,8 @@ package ua.foxminded.javaspring.lenskyi.carservice.service.impl;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.CarBrandDto;
-import ua.foxminded.javaspring.lenskyi.carservice.controller.dto.mapper.CarBrandDtoMapper;
+import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarBrandDto;
+import ua.foxminded.javaspring.lenskyi.carservice.model.mapper.CarBrandDtoMapper;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.IdDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.NameDoesNotExistException;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.TheNameIsNotUniqueException;
@@ -17,9 +17,9 @@ import java.util.List;
 @Service
 public class CarBrandServiceImpl implements CarBrandService {
 
-    private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with id=";
-    private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with name=";
-    private static final String NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE = "Error. Not unique CarBrand name=";
+    private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with id %d";
+    private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with name %s";
+    private static final String NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE = "Error. Not unique CarBrand name %s";
     private final CarBrandRepository carBrandRepository;
     private CarBrandDtoMapper mapper;
 
@@ -40,14 +40,14 @@ public class CarBrandServiceImpl implements CarBrandService {
     public CarBrandDto findById(Long id) {
         return carBrandRepository.findById(id)
                 .map(mapper::carBrandEntityToCarBrandDto)
-                .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id));
+                .orElseThrow(() -> new IdDoesNotExistException(String.format(ID_DOES_NOT_EXIST_ERROR_MESSAGE, id)));
     }
 
     @Override
     public CarBrandDto findByName(String name) {
         return carBrandRepository.findCarBrandByName(name)
                 .map(mapper::carBrandEntityToCarBrandDto)
-                .orElseThrow(() -> new NameDoesNotExistException(NAME_DOES_NOT_EXIST_ERROR_MESSAGE + name));
+                .orElseThrow(() -> new NameDoesNotExistException(String.format(NAME_DOES_NOT_EXIST_ERROR_MESSAGE, name)));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     @Transactional
     public CarBrandDto createCarBrand(CarBrandDto carBrandDto) {
         if (carBrandRepository.existsByName(carBrandDto.getName())) {
-            throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + carBrandDto.getName());
+            throw new TheNameIsNotUniqueException(String.format(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE, carBrandDto.getName()));
         }
         CarBrand carBrand = new CarBrand();
         carBrand.setName(carBrandDto.getName());
@@ -72,9 +72,9 @@ public class CarBrandServiceImpl implements CarBrandService {
     @Transactional
     public CarBrandDto updateCarBrand(CarBrandDto carBrandDto) {
         CarBrand carBrand = carBrandRepository.findById(carBrandDto.getId())
-                .orElseThrow(() -> new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + carBrandDto.getId()));
+                .orElseThrow(() -> new IdDoesNotExistException(String.format(ID_DOES_NOT_EXIST_ERROR_MESSAGE, carBrandDto.getId())));
         if (carBrandRepository.existsByName(carBrandDto.getName()) && (!carBrand.getName().equals(carBrandDto.getName()))) {
-            throw new TheNameIsNotUniqueException(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE + carBrandDto.getName());
+            throw new TheNameIsNotUniqueException(String.format(NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE, carBrandDto.getName()));
         }
         carBrand.setName(carBrandDto.getName());
         carBrandRepository.saveAndFlush(carBrand);
@@ -85,21 +85,19 @@ public class CarBrandServiceImpl implements CarBrandService {
     @Transactional
     public void deleteCarBrand(Long id) {
         if (!carBrandRepository.existsById(id)) {
-            throw new IdDoesNotExistException(ID_DOES_NOT_EXIST_ERROR_MESSAGE + id);
+            throw new IdDoesNotExistException(String.format(ID_DOES_NOT_EXIST_ERROR_MESSAGE, id));
         }
         carBrandRepository.deleteById(id);
     }
 
     @Override
-    public Page<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
+    public List<CarBrandDto> findAllPaginated(Integer pageNumber, Integer pageSize, String sort) {
         if (pageSize == 0) pageSize = carBrandRepository.findAll().size();
         Page<CarBrand> pageCarBrand = carBrandRepository.findAll(PageRequest.of(
                 pageNumber, pageSize, Sort.by(sort)
         ));
-        List<CarBrandDto> carBrandDtoList = pageCarBrand.getContent().stream()
+        return pageCarBrand.getContent().stream()
                 .map(mapper::carBrandEntityToCarBrandDto)
                 .toList();
-        return new PageImpl<>(carBrandDtoList, PageRequest.of(
-                pageCarBrand.getNumber(), pageCarBrand.getSize(), pageCarBrand.getSort()), pageCarBrand.getTotalElements());
     }
 }

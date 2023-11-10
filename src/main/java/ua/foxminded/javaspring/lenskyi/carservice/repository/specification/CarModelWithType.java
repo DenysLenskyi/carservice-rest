@@ -1,4 +1,4 @@
-package ua.foxminded.javaspring.lenskyi.carservice.controller.specification;
+package ua.foxminded.javaspring.lenskyi.carservice.repository.specification;
 
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
