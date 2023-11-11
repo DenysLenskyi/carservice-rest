@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: carservice_app_cont
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://carservice_db_cont:5432/carservice_db
+    volumes:
+      - ./logs:/logs
+
+  db:
+    image: postgres:15-alpine
+    container_name: carservice_db_cont
+    environment:
+      POSTGRES_USER: lenskyi
+      POSTGRES_PASSWORD: lenskyi
+      POSTGRES_DB: carservice_db
+    ports:
+      - '5432:5432'

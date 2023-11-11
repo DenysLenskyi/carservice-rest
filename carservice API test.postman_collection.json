@@ -1,0 +1,922 @@
+{
+	"info": {
+		"_postman_id": "9100f507-ca1d-492e-aefa-c492e60ee536",
+		"name": "carservice API test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30655531"
+	},
+	"item": [
+		{
+			"name": "CarBrandTest",
+			"item": [
+				{
+					"name": "/api/v1/brand",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test_brand_name\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand Not unique name",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Lexus\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"20\",\n    \"name\": \"updated_name\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand Not unique name",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"20\",\n    \"name\": \"Ram\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand id_does_not_exist",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"-1\",\n    \"name\": \"Ram\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/{brandWrongId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/1290",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"1290"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/{brandId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/{brandId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/by-name/{brandName}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/by-name/Lexus",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"by-name",
+								"Lexus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/by-name/{wrongBrandName}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/by-name/Lexusss",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"by-name",
+								"Lexusss"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/brand/{brandWrongId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/brand/-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"brand",
+								"-1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CarTypeTest",
+			"item": [
+				{
+					"name": "/api/v1/type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test_type_name\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type name exists",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"SUV\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"1\",\n    \"name\": \"updated_name\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type name exists",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"11\",\n    \"name\": \"Sedan\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type wrong id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"-1\",\n    \"name\": \"some name\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/{wrongTypeId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/{typeId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/all?pageSize=10&pageNumber=0&sort=name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"all"
+							],
+							"query": [
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "pageNumber",
+									"value": "0"
+								},
+								{
+									"key": "sort",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/{typeId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/by-name/{typeName}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/by-name/SUV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"by-name",
+								"SUV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/by-name/{wrongTypeName}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/by-name/SUVSUV",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"by-name",
+								"SUVSUV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/type/{wrongTypeId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/type/-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"type",
+								"-1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CarModelTest",
+			"item": [
+				{
+					"name": "/api/v1/model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"name\": \"BMW\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"Sedan\"\n        },\n        {\n            \"name\": \"SUV\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model invalid dto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test name\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"name\": \"invalid name\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"SUV\"\n        },\n        {\n            \"name\": \"Suvsuv\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model violate constraint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Armada\",\n    \"year\": \"2005\",\n    \"carBrandDto\": {\n        \"name\": \"Nissan\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"SUV\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model violate constraint",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"00YMth3mul\",\n    \"name\": \"Armada\",\n    \"year\": \"2005\",\n    \"carBrandDto\": {\n        \"name\": \"Nissan\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"SUV\"\n        },\n        {\n            \"name\": \"Sedan\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model/{modelId}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model/00NyD3beGfgjkgjkfg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"00NyD3beGfgjkgjkfg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model update partly",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"00NyD3beGf\",\n    \"name\": \"Musmus\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"00NyD3beGf\",\n    \"name\": \"Musmus\",\n    \"year\": \"2050\",\n    \"carBrandDto\": {\n        \"name\": \"Ford\"\n    },\n    \"carTypeDtos\": [\n        {\n            \"name\": \"Sedan\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model wrong id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"wrongid\",\n    \"name\": \"Musmus\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/model/search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/model/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"model",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
