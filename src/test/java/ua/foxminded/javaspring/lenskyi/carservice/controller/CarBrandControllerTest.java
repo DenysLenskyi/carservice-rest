@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -33,7 +37,12 @@ class CarBrandControllerTest {
     private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with id";
     private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarBrand with name";
     private static final String NOT_UNIQUE_BRAND_NAME_ERROR_MESSAGE = "Error. Not unique CarBrand name";
+    private static final String USER = "user";
     private final static int EXPECTED_NUM_BRANDS = 64;
+
+    private static final AnonymousAuthenticationToken ANONYMOUS =
+            new AnonymousAuthenticationToken("anonymous", "anonymousUser",
+                    AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
     @Autowired
     private CarBrandService carBrandService;
     @Autowired
@@ -99,6 +108,7 @@ class CarBrandControllerTest {
         carBrandDto.setName("testCarBrandName");
         mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/brand")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -108,11 +118,24 @@ class CarBrandControllerTest {
     }
 
     @Test
+    void createCarBrandUnauthorizedTest() throws Exception {
+        CarBrandDto carBrandDto = new CarBrandDto();
+        carBrandDto.setName("testCarBrandName");
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/brand")
+                        .content(objectMapper.writeValueAsString(carBrandDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void createCarBrandNotUniqueNameTest() throws Exception {
         CarBrandDto carBrandDto = new CarBrandDto();
         carBrandDto.setName(carBrandService.findAll().get(0).getName());
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/brand")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -129,6 +152,7 @@ class CarBrandControllerTest {
         carBrandDto.setName(updatedCarBrandName);
         mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/brand")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -143,6 +167,7 @@ class CarBrandControllerTest {
         carBrandDto.setName(carBrandService.findAll().get(1).getName());
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/brand")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -159,6 +184,7 @@ class CarBrandControllerTest {
         carBrandDto.setName("someName");
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/brand")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carBrandDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -173,7 +199,8 @@ class CarBrandControllerTest {
         List<CarBrandDto> carBrandDtoListBeforeRemoval = carBrandService.findAll();
         CarBrandDto carBrandDto = carBrandDtoListBeforeRemoval.get(0);
         mvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/brand/" + carBrandDto.getId()))
+                        .delete("/api/v1/brand/" + carBrandDto.getId())
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER)))))
                 .andExpect(status().isOk());
         List<CarBrandDto> carBrandDtoListAfterRemoval = carBrandService.findAll();
         assertEquals(carBrandDtoListBeforeRemoval.size() - 1, carBrandDtoListAfterRemoval.size());
@@ -184,7 +211,8 @@ class CarBrandControllerTest {
         CarBrandDto carBrandDto = carBrandService.findAll().get(0);
         long wrongId = carBrandDto.getId() - 500L;
         MvcResult result = mvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/brand/" + wrongId))
+                        .delete("/api/v1/brand/" + wrongId)
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER)))))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();
