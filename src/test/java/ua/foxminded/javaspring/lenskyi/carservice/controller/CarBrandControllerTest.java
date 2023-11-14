@@ -40,9 +40,6 @@ class CarBrandControllerTest {
     private static final String USER = "user";
     private final static int EXPECTED_NUM_BRANDS = 64;
 
-    private static final AnonymousAuthenticationToken ANONYMOUS =
-            new AnonymousAuthenticationToken("anonymous", "anonymousUser",
-                    AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
     @Autowired
     private CarBrandService carBrandService;
     @Autowired
