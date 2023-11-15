@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarTypeDto;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,6 +34,7 @@ class CarTypeControllerTest {
     private static final String ID_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with id";
     private static final String NAME_DOES_NOT_EXIST_ERROR_MESSAGE = "There is no CarType with name";
     private static final String ERROR_NOT_UNIQUE_CAR_TYPE_NAME = "Error. Not unique CarType name";
+    private static final String USER = "user";
     private final static int EXPECTED_NUM_TYPES = 10;
     @Autowired
     private CarTypeService carTypeService;
@@ -111,6 +113,7 @@ class CarTypeControllerTest {
         carTypeDto.setName("testCarTypeName");
         mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/type")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carTypeDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -120,11 +123,24 @@ class CarTypeControllerTest {
     }
 
     @Test
+    void createCarTypeUnauthorizedTest() throws Exception {
+        CarTypeDto carTypeDto = new CarTypeDto();
+        carTypeDto.setName("testCarTypeName");
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/type")
+                        .content(objectMapper.writeValueAsString(carTypeDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     void createCarTypeNotUniqueNameTest() throws Exception {
         CarTypeDto carTypeDto = new CarTypeDto();
         carTypeDto.setName(carTypeService.findAll().get(0).getName());
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/type")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carTypeDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -141,6 +157,7 @@ class CarTypeControllerTest {
         carTypeDto.setName(updatedTestName);
         mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/type")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carTypeDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -155,6 +172,7 @@ class CarTypeControllerTest {
         carTypeDto.setName(carTypeService.findAll().get(1).getName());
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/type")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carTypeDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -171,6 +189,7 @@ class CarTypeControllerTest {
         carTypeDto.setName("someName");
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/type")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carTypeDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -185,7 +204,8 @@ class CarTypeControllerTest {
         List<CarTypeDto> carTypeDtoListBeforeRemoval = carTypeService.findAll();
         CarTypeDto carTypeDto = carTypeDtoListBeforeRemoval.get(0);
         mvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/type/" + carTypeDto.getId()))
+                        .delete("/api/v1/type/" + carTypeDto.getId())
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER)))))
                 .andExpect(status().isOk());
         List<CarTypeDto> carTypeDtoListAfterRemoval = carTypeService.findAll();
         assertEquals(carTypeDtoListBeforeRemoval.size() - 1, carTypeDtoListAfterRemoval.size());
@@ -196,7 +216,8 @@ class CarTypeControllerTest {
         CarTypeDto carTypeDto = carTypeService.findAll().get(0);
         long wrongId = carTypeDto.getId() - 500L;
         MvcResult result = mvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/type/" + wrongId))
+                        .delete("/api/v1/type/" + wrongId)
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER)))))
                 .andExpect(status().isBadRequest())
                 .andReturn();
         String content = result.getResponse().getContentAsString();

@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.lenskyi.carservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,11 +39,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CarModelControllerTest {
 
     private static final String BRAND_DOES_NOT_EXIST = "There is no CarBrand with";
-    private static final String TYPE_DOES_NOT_EXIST = "There is no CarType with";
     private static final String MODEL_DOES_NOT_EXIST = "There is no CarModel with";
     private static final String CAR_TYPES_NOT_FOUND_BY_NAME = "No CarType found by provided names";
     private static final String MODEL_NAME_YEAR_BRAND_CONSTRAINT_VIOLATION_MESSAGE =
             "This CarModel name, year, Brand already exist";
+    private static final String USER = "user";
     private final static int EXPECTED_NUM_MODELS = 9836;
     @Autowired
     private CarBrandService carBrandService;
@@ -178,6 +181,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(suvDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -193,6 +197,24 @@ class CarModelControllerTest {
     }
 
     @Test
+    void createCarModelUnauthorizedTest() throws Exception {
+        CarModelDto carModelDto = new CarModelDto();
+        CarTypeDto suvDto = carTypeService.findByName("SUV");
+        CarBrandDto nissanDto = carBrandService.findByName("Nissan");
+        carModelDto.setName("testName");
+        carModelDto.setYear(986);
+        carModelDto.setCarBrandDto(nissanDto);
+        carModelDto.setCarTypeDtos(Set.of(suvDto));
+        MvcResult result = mvc.perform(MockMvcRequestBuilders
+                        .post("/api/v1/model")
+                        .content(objectMapper.writeValueAsString(carModelDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden())
+                .andReturn();
+    }
+
+    @Test
     void createCarModelWrongBrandNameTest() throws Exception {
         CarModelDto carModelDto = new CarModelDto();
         CarTypeDto suvDto = carTypeService.findByName("SUV");
@@ -205,6 +227,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(suvDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -227,6 +250,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(wrongCarType));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -247,6 +271,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(suvDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -269,6 +294,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(suvDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -291,6 +317,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(suvDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -314,6 +341,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(suvDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -334,6 +362,7 @@ class CarModelControllerTest {
         carModelDto.setCarTypeDtos(Set.of(wrongTypeDto));
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -354,6 +383,7 @@ class CarModelControllerTest {
         carModelDto.setCarBrandDto(wrongCarBrandDto);
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -373,6 +403,7 @@ class CarModelControllerTest {
         carModelDto2.setCarBrandDto(carModelDto1.getCarBrandDto());
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto2))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -389,6 +420,7 @@ class CarModelControllerTest {
         carModelDto2.setYear(carModelDto2.getYear() + 1);
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/model")
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER))))
                         .content(objectMapper.writeValueAsString(carModelDto2))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -402,7 +434,8 @@ class CarModelControllerTest {
     void deleteCarModelTest() throws Exception {
         String carModelId = carModelRepository.findAll().get(200).getName();
         mvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/model/" + carModelId))
+                        .delete("/api/v1/model/" + carModelId)
+                        .with(jwt().authorities(List.of(new SimpleGrantedAuthority(USER)))))
                 .andExpect(status().isOk());
         assertFalse(carModelRepository.existsById(carModelId));
     }

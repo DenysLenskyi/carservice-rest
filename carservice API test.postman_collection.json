@@ -918,5 +918,180 @@
 				}
 			]
 		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "refreshRequestParams",
+				"value": [
+					{
+						"key": "audience",
+						"value": "https://carservice-api",
+						"enabled": true,
+						"send_as": "request_body"
+					}
+				],
+				"type": "any"
+			},
+			{
+				"key": "tokenRequestParams",
+				"value": [
+					{
+						"key": "audience",
+						"value": "https://carservice-api",
+						"enabled": true,
+						"send_as": "request_body"
+					}
+				],
+				"type": "any"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://dev-6x83w5dsbuz6wtne.us.auth0.com/oauth/token",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "My Auth0 token",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{auth0_password}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "accessToken",
+				"value": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwiaXNzIjoiaHR0cHM6Ly9kZXYtNng4M3c1ZHNidXo2d3RuZS51cy5hdXRoMC5jb20vIn0..nk8-EE3nGb0JNUm7.QajK0YRBQjikSeenrDFCoZ-FpzqpBc9oBj6qLB8msIHG88hF15zhggwaYQZE7jXln7fWicBfhjE-E29d_WIk8qaz4hnyzkI0TlmELr2gQngEkxSAz78oDY4QiRdgU8KyriAvX1BvUGQueB2lSApS5QHkuiT2VOAnNTG2MFmgRZdh2lCOPbiH07UZHqVAokUWb-C20hfktIYIPHuJJ-UY5At7tT5plaWK4_h1qIJfacY8rPilS2XStx5adtMIHxnJ8xgxdwGcLqKEYl9-f8hxdherUpJ3hNu9uJAXMFzXz5WTalpcM_2rAfnfjVrCbba22a5vdmnRrs4r_5Sz1sC2z4CSA4ZoKPkstaEjoCmOve3S0P6ct9nHkqVtmHRH49bEfQ.xFsa1rXktA_DPWkswc9htg",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{auth0_username}}",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "password_credentials",
+				"type": "string"
+			},
+			{
+				"key": "authRequestParams",
+				"value": [
+					{
+						"key": "client_id",
+						"value": "{{auth0_clientid}}",
+						"enabled": true,
+						"send_as": "request_url"
+					},
+					{
+						"key": "return_type",
+						"value": "code",
+						"enabled": true,
+						"send_as": "request_url"
+					},
+					{
+						"key": "callback_uri",
+						"value": "http://localhost:8080/api/v1/brand/all?pageSize=20",
+						"enabled": true,
+						"send_as": "request_url"
+					}
+				],
+				"type": "any"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://dev-6x83w5dsbuz6wtne.us.auth0.com/autorize",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": false,
+				"type": "boolean"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{auth0_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{auth0_clientid}}",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "http://localhost:8080/api/v1/brand/all?pageSize=20",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "auth0_clientid",
+			"value": "mj8jbDqzSBhLTr7ix5exbUTrmDWbzK8B",
+			"type": "string"
+		},
+		{
+			"key": "auth0_secret",
+			"value": "9RJsgHWmK7vhGNpPk8jK1sfjHRonCmYMy7SFCOblvQJ48bWS_nStcueA6clj2R40",
+			"type": "string"
+		},
+		{
+			"key": "auth0_username",
+			"value": "denislensky94@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "auth0_password",
+			"value": "testTEST1111",
+			"type": "string"
+		},
+		{
+			"key": "auth0_audience",
+			"value": "https://carservice-api",
+			"type": "string"
+		}
 	]
 }
