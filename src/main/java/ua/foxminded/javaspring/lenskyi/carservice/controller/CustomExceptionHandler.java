@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ua.foxminded.javaspring.lenskyi.carservice.exception.CarModelNameYearBrandConstraintViolationException;
@@ -25,6 +26,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             NameDoesNotExistException.class,
             CarModelNameYearBrandConstraintViolationException.class
     })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String bodyOfResponse = ex.getMessage();
