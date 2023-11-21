@@ -24,10 +24,6 @@ public class Auth0Controller {
 
         @GetMapping
         public ResponseEntity<String> getAccessToken() {
-                System.out.println(domain);
-                System.out.println(clientId);
-                System.out.println(secret);
-                System.out.println(audience);
                 HttpResponse<String> response = Unirest.post("https://" + domain + "/oauth/token")
                         .header("content-type", "application/x-www-form-urlencoded")
                         .body("grant_type=client_credentials&client_id=" + clientId +
