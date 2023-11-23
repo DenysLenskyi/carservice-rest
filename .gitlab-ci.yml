@@ -62,4 +62,4 @@ deploy:
       rm docker-compose.yml || true &&
       exit"
     - scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@ec2-3-22-79-178.us-east-2.compute.amazonaws.com:/home/ubuntu/
-    - ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-22-79-178.us-east-2.compute.amazonaws.com "docker-compose up -d"
+    - ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-22-79-178.us-east-2.compute.amazonaws.com "sudo docker-compose up -d"
