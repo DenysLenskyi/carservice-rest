@@ -1,4 +1,4 @@
-package ua.foxminded.javaspring.lenskyi.carservice.security;
+package ua.foxminded.javaspring.lenskyi.carservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,14 +15,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(new AntPathRequestMatcher("/**", HttpMethod.GET.name())).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                        .authorizeHttpRequests(authorize -> authorize
+                                .requestMatchers(new AntPathRequestMatcher("/**", HttpMethod.GET.name())).permitAll()
+                                .anyRequest().authenticated()
+                        )
+                        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+                return http.build();
+        }
 }

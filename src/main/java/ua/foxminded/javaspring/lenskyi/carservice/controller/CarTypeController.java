@@ -7,12 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.foxminded.javaspring.lenskyi.carservice.model.dto.CarTypeDto;
 import ua.foxminded.javaspring.lenskyi.carservice.service.CarTypeService;
+import ua.foxminded.javaspring.lenskyi.carservice.util.swagger.CarTypeOpenApi;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/type")
-public class CarTypeController {
+public class CarTypeController implements CarTypeOpenApi {
 
     private CarTypeService carTypeService;
 

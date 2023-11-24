@@ -1,0 +1,65 @@
+services:
+ - name: docker:24.0.5-dind
+   command: ["--tls=false"]
+variables:
+ DOCKER_HOST: "tcp://docker:2375"
+ DOCKER_TLS_CERTDIR: ""
+ DOCKER_DRIVER: overlay2
+
+stages:
+  - compile
+  - test
+  - build-jar
+  - build-and-push-docker-image
+  - deploy
+
+maven-compile-job:
+  image: maven:latest
+  stage: compile
+  script:
+    - mvn compile
+
+maven-test-job:
+  image: maven:latest
+  stage: test
+  script:
+    - mvn test
+
+maven-build-job:
+  image: maven:latest
+  stage: build-jar
+  script:
+    - mvn package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+
+
+docker-build-and-push-job:
+  image: docker:24.0.5
+  stage: build-and-push-docker-image
+  before_script:
+    - docker login -u $DOCKER_HUB_USER_LENSKYI -p $DOCKER_HUB_PASSWORD
+  script:
+    - docker build -t denyslenskyi/lenskyi-docker-repository:carservice-rest-1.0 .
+    - docker push denyslenskyi/lenskyi-docker-repository:carservice-rest-1.0
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+    - eval $(ssh-agent -s)
+    - echo "${SSH_KEY}" | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan 3.22.79.178 >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-22-79-178.us-east-2.compute.amazonaws.com "
+      docker-compose down || true &&
+      docker rmi denyslenskyi/lenskyi-docker-repository:carservice-rest-1.0 || true &&
+      rm docker-compose.yml || true &&
+      exit"
+    - scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@ec2-3-22-79-178.us-east-2.compute.amazonaws.com:/home/ubuntu/
+    - ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-22-79-178.us-east-2.compute.amazonaws.com "sudo docker-compose up -d"
